@@ -1,5 +1,6 @@
 import React from 'react';
 import browser from 'webextension-polyfill';
+import Clock from "./Clock";
 
 import './styles.scss';
 
@@ -10,7 +11,7 @@ function openWebPage(url) {
 const Popup = () => {
   return (
     <section id="popup">
-      <h2>WEB-EXTENSION-STARTER</h2>
+      <Clock />
       <button
         id="options__button"
         type="button"
