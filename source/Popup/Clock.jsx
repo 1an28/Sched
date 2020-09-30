@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 
 const ClockScale = () => { // text pannel
+    const scaleStyle = {
+        width: "100%",
+        height: "100%"
+    };
+
     return (
-        <h1>clock scale</h1>
+        <svg style = {scaleStyle} viewBox = "-500 -500 1000 1000">
+
+        </svg>
     );
 };
 
