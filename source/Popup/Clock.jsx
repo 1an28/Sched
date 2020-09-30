@@ -8,7 +8,8 @@ const ClockScale = () => { // text pannel
 
     return (
         <svg style = {scaleStyle} viewBox = "-500 -500 1000 1000">
-
+            <circle cx="0" cy="0" r="440" fill="#ccc" />
+            <circle cx="0" cy="0" r="420" fill="#eee" />
         </svg>
     );
 };
