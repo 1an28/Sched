@@ -20,9 +20,14 @@ const ClockHands = ( props ) => { // hands
         return val;
     };
 
-    //const [degreeSeconds, setDegreeSeconds] = useState(Number);
-    //setDegreeSeconds((props.now.getSeconds() / 60) * 360 + (props.now.getMilliseconds() / 1000) * (360 / 60));
+    const [degreeSeconds, setDegreeSeconds] = useState((props.now.getSeconds() / 60) * 360 + (props.now.getMilliseconds() / 1000) * (360 / 60));
 
+    useEffect(() => {
+        const getTimerId = setInterval(() => {
+            setDegreeSeconds((props.now.getSeconds() / 60) * 360 + (props.now.getMilliseconds() / 1000) * (360 / 60));
+        }, 100 );
+        return () => clearInterval(getTimerId);
+    });
 
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
@@ -38,7 +43,7 @@ const ClockHands = ( props ) => { // hands
                 </g>
             </defs>
 
-            <use id = "hand_second" xlinkHref = "#def_hand_second" /* transform = {getTransformAttr(degreeSeconds)} */></use>
+            <use id = "hand_second" xlinkHref = "#def_hand_second" transform = {getTransformAttr(degreeSeconds)} ></use>
         </svg>
     );
 };
@@ -65,17 +70,14 @@ const ClockApplication = ( props ) => { // clock app
 };
 
 const Clock = () => {
-    const [start, setStart] = useState(new Date().getTime());
     const [now, setNow] = useState(new Date().getTime());
-    const [diff, setDiff] = useState(new Date().getTime());
     const [targetDate, setTargetDate] = useState(new Date());
 
     useEffect(() => {
         const timerId = setInterval(() => {
             setNow(new Date().getTime());
-            setDiff(now - start);
-            setTargetDate(new Date(now + diff));
-        }, 1000 );
+            setTargetDate(new Date(now));
+        }, 100 );
         return () => clearInterval(timerId);
     });
 
