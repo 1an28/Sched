@@ -21,10 +21,14 @@ const ClockHands = ( props ) => { // hands
     };
 
     const [degreeSeconds, setDegreeSeconds] = useState((props.now.getSeconds() / 60) * 360 + (props.now.getMilliseconds() / 1000) * (360 / 60));
+    const [degreeMinutes, setDegreeMinutes] = useState((props.now.getMinutes() / 60) * 360 + ((degreeSeconds / 360) * (360 / 60)));
+    const [degreeHours, setDegreeHours] = useState((props.now.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
 
     useEffect(() => {
         const getTimerId = setInterval(() => {
             setDegreeSeconds((props.now.getSeconds() / 60) * 360 + (props.now.getMilliseconds() / 1000) * (360 / 60));
+            setDegreeMinutes((props.now.getMinutes() / 60) * 360 + ((degreeSeconds / 360) * (360 / 60)));
+            setDegreeHours((props.now.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
         }, 100 );
         return () => clearInterval(getTimerId);
     });
@@ -42,7 +46,8 @@ const ClockHands = ( props ) => { // hands
                     <polygon points = "-2,-360 2,-360 3,30 -3,30" fill = "#CCC" />
                 </g>
             </defs>
-
+            <use id = "hand_long" xlinkHref = "#def_hand_long" transform = {getTransformAttr(degreeMinutes)} ></use>
+            <use id = "hand_short" xlinkHref = "#def_hand_short" transform = {getTransformAttr(degreeHours)} ></use>
             <use id = "hand_second" xlinkHref = "#def_hand_second" transform = {getTransformAttr(degreeSeconds)} ></use>
         </svg>
     );
