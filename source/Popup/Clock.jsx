@@ -15,9 +15,30 @@ const ClockScale = () => { // text pannel
 };
 
 const ClockHands = ( props ) => { // hands
+    const getTransformAttr = ( degree ) => {
+        const val = "rotate(" + degree + ")";
+        return val;
+    };
+
+    //const [degreeSeconds, setDegreeSeconds] = useState(Number);
+    //setDegreeSeconds((props.now.getSeconds() / 60) * 360 + (props.now.getMilliseconds() / 1000) * (360 / 60));
+
+
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
+            <defs>
+                <g id = "def_hand_long">
+                    <polygon points = "-5,-360 5,-360 10,30 -10,30" fill = "#888" />
+                </g>
+                <g id = "def_hand_short">
+                    <polygon points = "-5,-300 5,-300 10,30 -10,30" fill = "#888" />
+                </g>
+                <g id = "def_hand_second">
+                    <polygon points = "-2,-360 2,-360 3,30 -3,30" fill = "#CCC" />
+                </g>
+            </defs>
 
+            <use id = "hand_second" xlinkHref = "#def_hand_second" /* transform = {getTransformAttr(degreeSeconds)} */></use>
         </svg>
     );
 };
@@ -44,15 +65,22 @@ const ClockApplication = ( props ) => { // clock app
 };
 
 const Clock = () => {
-    const [time, setTime] = useState(new Date().getTime());
+    const [start, setStart] = useState(new Date().getTime());
+    const [now, setNow] = useState(new Date().getTime());
+    const [diff, setDiff] = useState(new Date().getTime());
+    const [targetDate, setTargetDate] = useState(new Date());
 
     useEffect(() => {
-        const timerId = setInterval(() => setTime(new Date().getTime()), 1000);
+        const timerId = setInterval(() => {
+            setNow(new Date().getTime());
+            setDiff(now - start);
+            setTargetDate(new Date(now + diff));
+        }, 1000 );
         return () => clearInterval(timerId);
     });
 
     return (
-        <ClockApplication now = {time}/>
+        <ClockApplication now = {targetDate}/>
     );
 };
 
