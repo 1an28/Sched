@@ -1,21 +1,20 @@
 import React from 'react';
-import browser from 'webextension-polyfill';
-import Clock from "./Clock";
+import {browser, Tabs} from 'webextension-polyfill-ts';
 
 import './styles.scss';
 
-function openWebPage(url) {
+function openWebPage(url: string): Promise<Tabs.Tab> {
   return browser.tabs.create({url});
 }
 
-const Popup = () => {
+const Popup: React.FC = () => {
   return (
     <section id="popup">
-      <Clock />
+      <h2>WEB-EXTENSION-STARTER</h2>
       <button
         id="options__button"
         type="button"
-        onClick={() => {
+        onClick={(): Promise<Tabs.Tab> => {
           return openWebPage('options.html');
         }}
       >
@@ -26,7 +25,7 @@ const Popup = () => {
           <li>
             <button
               type="button"
-              onClick={() => {
+              onClick={(): Promise<Tabs.Tab> => {
                 return openWebPage(
                   'https://github.com/abhijithvijayan/web-extension-starter'
                 );
@@ -38,7 +37,7 @@ const Popup = () => {
           <li>
             <button
               type="button"
-              onClick={() => {
+              onClick={(): Promise<Tabs.Tab> => {
                 return openWebPage(
                   'https://www.buymeacoffee.com/abhijithvijayan'
                 );
