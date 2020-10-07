@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 
-const ClockScale = () => { // text pannel
-    const svgStyle = {
+type Props = {
+    now: Date;
+};
+
+const ClockScale: React.FC = () => { // pannel
+    const scaleStyle: React.CSSProperties = {
         width: "100%",
         height: "100%"
     };
-
+    
     return (
-        <svg style = {svgStyle} viewBox = "-500 -500 1000 1000">
+        <svg style = {scaleStyle} viewBox = "-500 -500 1000 1000">
             <circle cx="0" cy="0" r="440" fill="#ccc" />
             <circle cx="0" cy="0" r="420" fill="#eee" />
         </svg>
     );
 };
 
-const ClockHands = ( props ) => { // hands
-    const getTransformAttr = ( degree ) => {
+const ClockHands: React.FC<Props> = ( props ) => { // hands
+    const getTransformAttr = ( degree: number ) => {
         const val = "rotate(" + degree + ")";
         return val;
     };
@@ -53,14 +57,9 @@ const ClockHands = ( props ) => { // hands
     );
 };
 
-const ClockApplication = ( props ) => { // clock app
+const ClockApplication: React.FC<Props> = ( props ) => { // clock app
 
-    const divStyle = {
-        width: "95%",
-        height: "95%"
-    };
-
-    const ClockAppStyle = {
+    const ClockAppStyle: React.CSSProperties = {
         position: "relative",
         width: "100%",
         paddingBottom: "100%"
@@ -68,13 +67,14 @@ const ClockApplication = ( props ) => { // clock app
 
     return (
         <section style = {ClockAppStyle}>
-            <div style = {divStyle}> <ClockScale /></div>
-            <div style = {divStyle}> <ClockHands now = {props.now} /> </div>
+            <div> <ClockScale /></div>
+            <div> <ClockHands now = {props.now} /> </div>
         </section>
     );
 };
 
-const Clock = () => {
+
+const Clock: React.FC = () => {
     const [now, setNow] = useState(new Date().getTime());
     const [targetDate, setTargetDate] = useState(new Date());
 
@@ -82,12 +82,11 @@ const Clock = () => {
         const timerId = setInterval(() => {
             setNow(new Date().getTime());
             setTargetDate(new Date(now));
-        }, 100 );
+        }, 100);
         return () => clearInterval(timerId);
-    });
-
+    })
     return (
-        <ClockApplication now = {targetDate}/>
+        <ClockApplication now = {targetDate} />
     );
 };
 

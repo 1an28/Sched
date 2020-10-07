@@ -2,7 +2,7 @@
 <p align="center">Web Extension starter to build "Write Once Run on Any Browser" extension</p>
 <div align="center">
   <a href="https://travis-ci.com/abhijithvijayan/web-extension-starter">
-    <img src="https://travis-ci.com/abhijithvijayan/web-extension-starter.svg?branch=react-javascript" alt="Travis Build" />
+    <img src="https://travis-ci.com/abhijithvijayan/web-extension-starter.svg?branch=react-typescript" alt="Travis Build" />
   </a>
   </a>
   <a href="https://david-dm.org/abhijithvijayan/web-extension-starter">
@@ -30,9 +30,9 @@
 
 ❤️ it? ⭐️ it on [GitHub](https://github.com/abhijithvijayan/web-extension-starter) or [Tweet](https://twitter.com/intent/tweet?text=Check%20out%20web-extension-starter%21%20by%20%40_abhijithv%0A%0AWeb%20Extension%20starter%20to%20build%20%22Write%20Once%20Run%20on%20Any%20Browser%22%20extension.%20https%3A%2F%2Fgithub.com%2Fabhijithvijayan%2Fweb-extension-starter%0A%0A%23javascript%20%23react%20%23typescript%20%23sass%20%23webextension%20%23chrome%20%23firefox%20%23opera) about it.
 
-😨 **React + JavaScript** = [This](https://github.com/abhijithvijayan/web-extension-starter/tree/react-javascript) branch
+🧙‍♂️ **React + TypeScript** = [This](https://github.com/abhijithvijayan/web-extension-starter/tree/react-typescript) branch
 
-🧙‍♂️ **React + TypeScript** = Checkout [react-typescript](https://github.com/abhijithvijayan/web-extension-starter/tree/react-typescript) branch
+😨 **React + JavaScript** = Checkout [react-javascript](https://github.com/abhijithvijayan/web-extension-starter/tree/react-javascript) branch
 
 👶🏼 **HTML + JavaScript** = Checkout [master](https://github.com/abhijithvijayan/web-extension-starter/tree/master) branch
 
@@ -43,6 +43,7 @@
 - Automatic build on code changes
 - Auto packs browser specific build files
 - SASS styling
+- TypeScript by default
 - ES6 modules support
 - React UI Library by default
 - Smart reload
@@ -53,16 +54,21 @@
 | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
 | 49 & later ✔                                                                                  | 52 & later ✔                                                                                     | 36 & later ✔                                                                               | 79 & later ✔                                                                            | Latest ✔                                                                                      | Latest ✔                                                                                   | Latest ✔                                                                                         |
 
-## Demo
+## Used by extensions in production that has over 100,000+ users.
 
-- [abhijithvijayan/kutt-extension](https://github.com/abhijithvijayan/kutt-extension)
+- [kutt-extension](https://chrome.google.com/webstore/detail/kutt/pklakpjfiegjacoppcodencchehlfnpd) in [abhijithvijayan/kutt-extension](https://github.com/abhijithvijayan/kutt-extension)
+- [Virtual backgrounds for Google Meet](https://chrome.google.com/webstore/detail/virtual-backgrounds-for-g/ghlkgnalbbkgpdlodjlackgjehofahoc) in [Coderantine/VirtualBackgroundsForWeb](https://github.com/Coderantine/VirtualBackgroundsForWeb)
+- [doubanIMDb](https://chrome.google.com/webstore/detail/doubanimdb/nfibbjnhkbjlgjaojglmmibdjicidini) in [lisongx/doubanIMDb](https://github.com/lisongx/doubanIMDb)
+- [Mooc Assistant](https://chrome.google.com/webstore/detail/mooc-assistant/oebggekgendmoeedkkdkdcdbmfbfeldc) in [unbyte/mooc-assistant](https://github.com/unbyte/mooc-assistant)
+
+and many more...
 
 ## Use this template
 
 Create a new directory and run
 
 ```
-curl -fsSL https://github.com/abhijithvijayan/web-extension-starter/archive/react-javascript.tar.gz | tar -xz --strip-components=1
+curl -fsSL https://github.com/abhijithvijayan/web-extension-starter/archive/react-typescript.tar.gz | tar -xz --strip-components=1
 ```
 
 ## 🚀 Quick Start
@@ -167,9 +173,10 @@ See the original [README](https://github.com/abhijithvijayan/wext-manifest-loade
 
 Please file an issue [here](https://github.com/abhijithvijayan/web-extension-starter/issues/new) for bugs, missing documentation, or unexpected behavior.
 
-### Linting Config
+### Linting & TypeScript Config
 
 - Shared Eslint & Prettier Configuration - [`@abhijithvijayan/eslint-config`](https://www.npmjs.com/package/@abhijithvijayan/eslint-config)
+- Shared TypeScript Configuration - [`@abhijithvijayan/tsconfig`](https://www.npmjs.com/package/@abhijithvijayan/tsconfig)
 
 ## License
 
