@@ -5,8 +5,16 @@ type Props = {
 };
 
 const ClockScale: React.FC = () => { // text pannel
+    const scaleStyle: React.CSSProperties = {
+        width: "100%",
+        height: "100%"
+    };
+    
     return (
-        <h1>clock scale</h1>
+        <svg style = {scaleStyle} viewBox = "-500 -500 1000 1000">
+            <circle cx="0" cy="0" r="440" fill="#ccc" />
+            <circle cx="0" cy="0" r="420" fill="#eee" />
+        </svg>
     );
 };
 
