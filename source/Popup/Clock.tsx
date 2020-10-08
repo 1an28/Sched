@@ -76,7 +76,6 @@ const ClockApplication: React.FC = () => { // clock app
 
 
 const Clock: React.FC = () => {
-    
     return (
         <ClockApplication />
     );

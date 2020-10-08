@@ -1,5 +1,5 @@
 import React from 'react';
-//import {browser, Tabs} from 'webextension-polyfill-ts';
+//import {browser} from 'webextension-polyfill-ts';
 
 import Clock from "./Clock";
 import Form from "./Form";
