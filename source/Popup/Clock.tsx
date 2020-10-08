@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-type Props = {
-    now: Date;
-};
-
 const ClockScale: React.FC = () => { // pannel
     const scaleStyle: React.CSSProperties = {
         width: "100%",
@@ -18,24 +14,29 @@ const ClockScale: React.FC = () => { // pannel
     );
 };
 
-const ClockHands: React.FC<Props> = ( props ) => { // hands
+const ClockHands: React.FC = () => { // hands
     const getTransformAttr = ( degree: number ) => {
         const val = "rotate(" + degree + ")";
         return val;
     };
 
-    const [degreeSeconds, setDegreeSeconds] = useState((props.now.getSeconds() / 60) * 360 + (props.now.getMilliseconds() / 1000) * (360 / 60));
-    const [degreeMinutes, setDegreeMinutes] = useState((props.now.getMinutes() / 60) * 360 + ((degreeSeconds / 360) * (360 / 60)));
-    const [degreeHours, setDegreeHours] = useState((props.now.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
+    const [now, setNow] = useState(new Date().getTime());
+    const [targetDate, setTargetDate] = useState(new Date());
+
+    const [degreeSeconds, setDegreeSeconds] = useState((targetDate.getSeconds() / 60) * 360 + (targetDate.getMilliseconds() / 1000) * (360 / 60));
+    const [degreeMinutes, setDegreeMinutes] = useState((targetDate.getMinutes() / 60) * 360 + ((degreeSeconds / 360) * (360 / 60)));
+    const [degreeHours, setDegreeHours] = useState((targetDate.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
 
     useEffect(() => {
-        const getTimerId = setInterval(() => {
-            setDegreeSeconds((props.now.getSeconds() / 60) * 360 + (props.now.getMilliseconds() / 1000) * (360 / 60));
-            setDegreeMinutes((props.now.getMinutes() / 60) * 360 + ((degreeSeconds / 360) * (360 / 60)));
-            setDegreeHours((props.now.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
-        }, 100 );
-        return () => clearInterval(getTimerId);
-    });
+        const timerId = setInterval(() => {
+            setNow(new Date().getTime());
+            setTargetDate(new Date(now));
+            setDegreeSeconds((targetDate.getSeconds() / 60) * 360 + (targetDate.getMilliseconds() / 1000) * (360 / 60)); 
+            setDegreeMinutes((targetDate.getMinutes() / 60) * 360 + ((degreeSeconds / 360) * (360 / 60)));
+            setDegreeHours((targetDate.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
+        }, 100);
+        return () => clearInterval(timerId);
+    })
 
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
@@ -57,7 +58,7 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
     );
 };
 
-const ClockApplication: React.FC<Props> = ( props ) => { // clock app
+const ClockApplication: React.FC = () => { // clock app
 
     const ClockAppStyle: React.CSSProperties = {
         position: "relative",
@@ -68,25 +69,16 @@ const ClockApplication: React.FC<Props> = ( props ) => { // clock app
     return (
         <section style = {ClockAppStyle}>
             <div> <ClockScale /></div>
-            <div> <ClockHands now = {props.now} /> </div>
+            <div> <ClockHands /> </div>
         </section>
     );
 };
 
 
 const Clock: React.FC = () => {
-    const [now, setNow] = useState(new Date().getTime());
-    const [targetDate, setTargetDate] = useState(new Date());
-
-    useEffect(() => {
-        const timerId = setInterval(() => {
-            setNow(new Date().getTime());
-            setTargetDate(new Date(now));
-        }, 100);
-        return () => clearInterval(timerId);
-    })
+    
     return (
-        <ClockApplication now = {targetDate} />
+        <ClockApplication />
     );
 };
 
