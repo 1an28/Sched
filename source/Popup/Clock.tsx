@@ -40,6 +40,7 @@ const ClockHands: React.FC = () => { // hands
 
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
+            <text fontSize = "100" textAnchor = "middle" dominantBaseline = "central"> {targetDate.getHours()} : {targetDate.getMinutes()} </text>
             <defs>
                 <g id = "def_hand_long">
                     <polygon points = "-8,-440 8,-440 5,-250 -5,-250" fill = "#888" />
