@@ -1,40 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 //import {browser} from 'webextension-polyfill-ts';
 
-type Task = Partial<{
+type Task = {
     beginTime: string,
     endTime: string
-}>;
+};
 
 const Form: React.FC = () => {
     const [beginTime, setBeginTime] = useState("");
     const [endTime, setEndTime] = useState("");
-    const [task, setTask] = useState<Task>();
-    let taskCount = 0;
+    const [tasks, setTasks] = useState<Task[]>([]);
+    
+    useEffect(() => {
+        const item = localStorage.getItem("tasks");
+        if (item) {
+            console.log(item);
+            const tasksItem: Task[] = JSON.parse(item);
+            tasksItem.forEach(task => {
+                setTasks((tasks) => {
+                    return tasks.concat(task);
+                });
+            });
+        };
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }, [tasks]);
+
     const handleSubmit = ( event: React.FormEvent<HTMLFormElement> ) => {
-
-        const addTask: Task = {};
-        addTask.beginTime = beginTime;
-        addTask.endTime = endTime;
-        setTask(addTask);
         event.preventDefault();
-
-        localStorage.setItem( "task" + taskCount.toString(), addTask?.beginTime );
+        const addTask: Task = {
+            beginTime: beginTime,
+            endTime: endTime
+        };
+        setTasks(tasks.concat(addTask));
     };
     
     const BeginHandleChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
         setBeginTime( event.currentTarget.value );
     };
+
     const EndHandleChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        setEndTime( event.currentTarget.value )
+        setEndTime( event.currentTarget.value );
     };
-    
+
     return(
         <form onSubmit = {handleSubmit}>
             <ul>
-                <li>{localStorage.getItem("task0")}</li>
-                <li>{task?.toString()}</li>
+            {
+                tasks.map(task => {
+                    return(
+                        <li> {task.beginTime} / {task.endTime} </li>
+                    );
+                })
+            }
             </ul>
+
             <input type = "time" onChange = {BeginHandleChange} />
             <input type = "time" onChange = {EndHandleChange} />
             <input type = "submit" />
