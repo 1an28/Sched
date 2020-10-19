@@ -8,7 +8,7 @@ const ClockScale: React.FC = () => { // pannel
     
     return (
         <svg style = {scaleStyle} viewBox = "-500 -500 1000 1000">
-            <circle cx="0" cy="0" r="440" fill="#ccc" />
+            <circle cx="0" cy="0" r="440" fill="black" />
             <circle cx="0" cy="0" r="420" fill="#eee" />
         </svg>
     );
@@ -36,19 +36,19 @@ const ClockHands: React.FC = () => { // hands
             setDegreeHours((targetDate.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
         }, 100);
         return () => clearInterval(timerId);
-    })
+    });
 
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
             <defs>
                 <g id = "def_hand_long">
-                    <polygon points = "-5,-360 5,-360 10,30 -10,30" fill = "#888" />
+                    <polygon points = "-8,-440 8,-440 5,-250 -5,-250" fill = "#888" />
                 </g>
                 <g id = "def_hand_short">
-                    <polygon points = "-5,-300 5,-300 10,30 -10,30" fill = "#888" />
+                    <polygon points = "-10,-440 10,-440 5,-300 -5,-300" fill = "#888" />
                 </g>
                 <g id = "def_hand_second">
-                    <polygon points = "-2,-360 2,-360 3,30 -3,30" fill = "#CCC" />
+                    <polygon points = "-5,-440 5,-440 3,-250 -3,-250" fill = "#CCC" />
                 </g>
             </defs>
             <use id = "hand_long" xlinkHref = "#def_hand_long" transform = {getTransformAttr(degreeMinutes)} ></use>
