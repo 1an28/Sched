@@ -4,6 +4,11 @@ type Props = {
     date: Date;
 };
 
+type Task = {
+    beginTime: string,
+    endTime: string
+};
+
 const ClockScale: React.FC = () => { // pannel    
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
@@ -57,8 +62,43 @@ const DigitalClock: React.FC<Props> = ( props ) => {
     );
 };
 
+const SchedObject: React.FC = () => {
+
+    const [tasks, setTasks] = useState<Task[]>([]);
+
+    useEffect(() => {
+        const item = localStorage.getItem("tasks");
+        if (item) {
+            const tasksItem: Task[] = JSON.parse(item);
+            setTasks(tasksItem);
+        };
+    }, []);
+
+    useEffect(() => {
+        const item = localStorage.getItem("tasks");
+        if (item) {
+            const tasksItem: Task[] = JSON.parse(item);
+            setTasks(tasksItem);
+        };
+    }, [localStorage.getItem("tasks")]);
+
+    return (
+        <ul>
+            {
+                tasks.map((task, index) => {
+                    return(
+                        <li>
+                            <p> {task.beginTime} - {task.endTime} : {index} </p>
+                        </li>
+                    );
+                })
+            }
+            </ul>
+    );
+};
+
 const ClockApplication: React.FC = () => { // clock app
-    
+
     const [now, setNow] = useState(new Date().getTime());
     const [targetDate, setTargetDate] = useState(new Date());
 
@@ -78,9 +118,10 @@ const ClockApplication: React.FC = () => { // clock app
 
     return (
         <section style = {ClockAppStyle}>
-            <div> <ClockScale /> </div>
-            <div> <ClockHands date = {targetDate}/> </div>
-            <div> <DigitalClock date = {targetDate}/> </div>
+            <ClockScale />
+            <ClockHands date = {targetDate}/>
+            <DigitalClock date = {targetDate}/>
+            <SchedObject />
         </section>
     );
 };

@@ -14,13 +14,8 @@ const Form: React.FC = () => {
     useEffect(() => {
         const item = localStorage.getItem("tasks");
         if (item) {
-            console.log(item);
             const tasksItem: Task[] = JSON.parse(item);
-            tasksItem.forEach(task => {
-                setTasks((tasks) => {
-                    return tasks.concat(task);
-                });
-            });
+            setTasks(tasksItem);
         };
     }, []);
 
@@ -45,22 +40,32 @@ const Form: React.FC = () => {
         setEndTime( event.currentTarget.value );
     };
 
+    const handleClick = ( index: number ) => {
+        tasks.splice(index, 1);
+        setTasks([...tasks]);
+    };
+
     return(
-        <form onSubmit = {handleSubmit}>
+        <section>
             <ul>
             {
-                tasks.map(task => {
+                tasks.map((task, index) => {
                     return(
-                        <li> {task.beginTime} / {task.endTime} </li>
+                        <li>
+                            <p> {task.beginTime} - {task.endTime} : {index} </p>
+                            <button onClick = { () => handleClick(index) } > ✕ </button>
+                        </li>
                     );
                 })
             }
             </ul>
-
-            <input type = "time" onChange = {BeginHandleChange} />
-            <input type = "time" onChange = {EndHandleChange} />
-            <input type = "submit" />
-        </form>
+            <form onSubmit = {handleSubmit}>
+                <input type = "time" onChange = {BeginHandleChange} />
+                <input type = "time" onChange = {EndHandleChange} />
+                <input type = "submit" />
+            </form>
+        </section>
+        
     );
 };
 
