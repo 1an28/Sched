@@ -48,16 +48,16 @@ const Form: React.FC = () => {
     return(
         <section>
             <ul>
-            {
-                tasks.map((task, index) => {
-                    return(
-                        <li>
-                            <p> {task.beginTime} - {task.endTime} : {index} </p>
-                            <button onClick = { () => handleClick(index) } > ✕ </button>
-                        </li>
-                    );
-                })
-            }
+                {
+                    tasks.map((task, index) => {
+                        return(
+                            <li>
+                                <p> {task.beginTime} - {task.endTime} : {index} </p>
+                                <button onClick = { () => handleClick(index) } > ✕ </button>
+                            </li>
+                        );
+                    })
+                }
             </ul>
             <form onSubmit = {handleSubmit}>
                 <input type = "time" onChange = {BeginHandleChange} />

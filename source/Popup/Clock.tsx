@@ -63,8 +63,9 @@ const DigitalClock: React.FC<Props> = ( props ) => {
 };
 
 const SchedObject: React.FC = () => {
-
     const [tasks, setTasks] = useState<Task[]>([]);
+
+    
 
     useEffect(() => {
         const item = localStorage.getItem("tasks");
@@ -82,18 +83,37 @@ const SchedObject: React.FC = () => {
         };
     }, [localStorage.getItem("tasks")]);
 
+    
+    const getTransformAttr = ( degree: number ) => {
+        const val = "rotate(" + degree + ")";
+        return val;
+    };
+    
+
+    const beginTimeToDegree = (beginTime: string) => {
+        const result = beginTime.split(":");
+        const hour = parseInt(result[0]);
+        const minute = parseInt(result[1]);
+
+        return (hour / 12) * 360 + ((minute / 360) * (360 / 60));
+    };
+
     return (
-        <ul>
+        <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
+            <defs>
+                <g id = "def_hand_task">
+                    <polygon points = "-10,-440 10,-440 5,-300 -5,-300" fill = "black" />
+                </g>
+            </defs>
             {
                 tasks.map((task, index) => {
                     return(
-                        <li>
-                            <p> {task.beginTime} - {task.endTime} : {index} </p>
-                        </li>
+                        <use id = { "hand_task" + index } xlinkHref = "#def_hand_task" transform = {getTransformAttr(beginTimeToDegree(task.beginTime))} ></use>
                     );
                 })
             }
-            </ul>
+            
+        </svg>
     );
 };
 
