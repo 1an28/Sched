@@ -24,14 +24,14 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
         return val;
     };
 
-    const [degreeSeconds, setDegreeSeconds] = useState((props.date.getSeconds() / 60) * 360 + (props.date.getMilliseconds() / 1000) * (360 / 60));
-    const [degreeMinutes, setDegreeMinutes] = useState((props.date.getMinutes() / 60) * 360 + ((degreeSeconds / 360) * (360 / 60)));
-    const [degreeHours, setDegreeHours] = useState((props.date.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
+    const [degreeSeconds, setDegreeSeconds] = useState(0);
+    const [degreeMinutes, setDegreeMinutes] = useState(0);
+    const [degreeHours, setDegreeHours] = useState(0);
 
     useEffect(() => {
-        setDegreeSeconds((props.date.getSeconds() / 60) * 360 + (props.date.getMilliseconds() / 1000) * (360 / 60)); 
-        setDegreeMinutes((props.date.getMinutes() / 60) * 360 + ((degreeSeconds / 360) * (360 / 60)));
-        setDegreeHours((props.date.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
+        setDegreeSeconds((props.date.getSeconds() * (360 / 60)) + (props.date.getMilliseconds() * (360 / 60) / 1000)); 
+        setDegreeMinutes((props.date.getMinutes() * (360 / 60)) + (props.date.getSeconds() * (360 / 60) / 60) + (props.date.getMilliseconds() * ((360 / 60) / 60) / 1000));
+        setDegreeHours((props.date.getHours() * (360 / 12)) + (props.date.getMinutes() * ((360 / 12) / 60)) + (props.date.getSeconds() * ((360 / 12) / 60) / 60));
     }, [props.date]);
 
     return (
