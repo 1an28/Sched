@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 //import {browser} from 'webextension-polyfill-ts';
 
 type Task = {
-    beginTime: string,
-    endTime: string
+    beginTime: TimeItem,
+    endTime: TimeItem
+};
+
+type TimeItem = {
+    hour: number,
+    minute: number
 };
 
 const Form: React.FC = () => {
-    const [beginTime, setBeginTime] = useState("");
-    const [endTime, setEndTime] = useState("");
+    const [beginTime, setBeginTime] = useState<TimeItem>({hour: 0, minute: 0});
+    const [endTime, setEndTime] = useState<TimeItem>({hour: 0, minute: 0});
     const [tasks, setTasks] = useState<Task[]>([]);
     
     useEffect(() => {
@@ -33,11 +38,19 @@ const Form: React.FC = () => {
     };
     
     const BeginHandleChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        setBeginTime( event.currentTarget.value );
+        const result = event.currentTarget.value;
+        const resultSplit = result.split(":");
+        const hourItem = parseInt(resultSplit[0]);
+        const minuteItem = parseInt(resultSplit[1]);
+        setBeginTime({hour: hourItem, minute: minuteItem});
     };
 
     const EndHandleChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        setEndTime( event.currentTarget.value );
+        const result = event.currentTarget.value;
+        const resultSplit = result.split(":");
+        const hourItem = parseInt(resultSplit[0]);
+        const minuteItem = parseInt(resultSplit[1]);
+        setEndTime({hour: hourItem, minute: minuteItem});
     };
 
     const handleClick = ( index: number ) => {
@@ -52,7 +65,7 @@ const Form: React.FC = () => {
                     tasks.map((task, index) => {
                         return(
                             <li>
-                                <p> {task.beginTime} - {task.endTime} : {index} </p>
+                                <p> {task.beginTime.hour} : {task.beginTime.minute} - {task.endTime.hour} : {task.endTime.minute} </p>
                                 <button onClick = { () => handleClick(index) } > ✕ </button>
                             </li>
                         );

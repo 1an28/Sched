@@ -5,8 +5,13 @@ type Props = {
 };
 
 type Task = {
-    beginTime: string,
-    endTime: string
+    beginTime: TimeItem,
+    endTime: TimeItem
+};
+
+type TimeItem = {
+    hour: number,
+    minute: number
 };
 
 const ClockScale: React.FC = () => { // pannel    
@@ -66,12 +71,8 @@ const SchedObject: React.FC = () => {
         };
     }, [localStorage.getItem("tasks")]);    
 
-    const beginTimeToDegree = (beginTime: string) => {
-        const result = beginTime.split(":");
-        const hour = parseInt(result[0]);
-        const minute = parseInt(result[1]);
-
-        return ( hour * (360 / 12)) + ( minute * ((360 / 12) / 60) );
+    const beginTimeToDegree = (beginTime: TimeItem) => {
+        return (beginTime.hour * (360 / 12)) + (beginTime.minute * ((360 / 12) / 60));
     };
 
     return (
