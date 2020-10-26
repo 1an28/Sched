@@ -14,11 +14,10 @@ type TimeItem = {
     minute: number
 };
 
-const ClockScale: React.FC = () => { // pannel    
+const ClockFrame: React.FC = () => { // pannel    
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
-            <circle cx="0" cy="0" r="440" fill="black" />
-            <circle cx="0" cy="0" r="420" fill="#eee" />
+            <circle cx = "0" cy = "0" r = "430" fill = "none" stroke = "black" strokeWidth = "20"/>
         </svg>
     );
 };
@@ -102,16 +101,16 @@ const SchedObject: React.FC = () => {
                           d = {
                             "M " + 
                             (Math.cos(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * schedThick) + " " +
-                            (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * schedThick) + 
+                            (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * schedThick) + " " +
                             "L " +
                             (Math.cos(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * 440) + " " +
-                            (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * 440) + 
+                            (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * 440) + " " +
                             "A 440 440 0 " + checkFlag(task) + " 1 " +
                             (Math.cos(Math.PI * (timeToDegree(task.endTime) - 0.5)) * 440) + " " +
-                            (Math.sin(Math.PI * (timeToDegree(task.endTime) - 0.5)) * 440) +
+                            (Math.sin(Math.PI * (timeToDegree(task.endTime) - 0.5)) * 440) + " " +
                             "L" +
                             (Math.cos(Math.PI * (timeToDegree(task.endTime) - 0.5)) * schedThick) + " " +
-                            (Math.sin(Math.PI * (timeToDegree(task.endTime) - 0.5)) * schedThick) +
+                            (Math.sin(Math.PI * (timeToDegree(task.endTime) - 0.5)) * schedThick) + " " +
                             "A " + schedThick + " " + schedThick + " 0 " + checkFlag(task) + " 0 " +
                             (Math.cos(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * schedThick) + " " +
                             (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * schedThick)
@@ -146,14 +145,13 @@ const ClockApplication: React.FC = () => { // clock app
 
     return (
         <section style = {ClockAppStyle}>
-            <ClockScale />
+            <ClockFrame />
             <ClockHands date = {targetDate}/>
             <DigitalClock date = {targetDate}/>
             <SchedObject />
         </section>
     );
 };
-
 
 const Clock: React.FC = () => {
     return (
