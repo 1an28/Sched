@@ -71,16 +71,40 @@ const SchedObject: React.FC = () => {
         };
     }, [localStorage.getItem("tasks")]);    
 
-    const beginTimeToDegree = (beginTime: TimeItem) => {
-        return (beginTime.hour * (360 / 12)) + (beginTime.minute * ((360 / 12) / 60));
+    const timeToDegree = (timeItem: TimeItem) => {
+        return (((timeItem.hour * (360 / 12)) + (timeItem.minute * ((360 / 12) / 60))) / 180);
     };
 
+    const checkFlag = (task: Task) => {
+        let long = task.endTime.hour + task.endTime.minute - task.beginTime.hour - task.beginTime.minute;
+        if (long < 6) {
+            return 0;
+        } else if (long >= 6) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
             {
                 tasks.map((task, index) => {
                     return(
-                        <polygon id = { "tasks" + index } points = "-10,-440 10,-440 5,-300 -5,-300" fill = "black" transform = {"rotate(" + beginTimeToDegree(task.beginTime) + ")"} />
+                        <path
+                          id = {"task" + index }
+                          stroke = "black"
+                          d = {
+                            "M 0 0 " +
+                            "L " + 
+                            (Math.cos(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * 440) + " " +
+                            (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * 440) +
+                            "A 440 440 0 " + checkFlag(task) + " 1 " +
+                            (Math.cos(Math.PI * (timeToDegree(task.endTime) - 0.5)) * 440) + " " +
+                            (Math.sin(Math.PI * (timeToDegree(task.endTime) - 0.5)) * 440) +
+                            "L 0 0"
+                          }
+                          fill="red"
+                        />
                     );
                 })
             }
