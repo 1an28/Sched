@@ -80,12 +80,15 @@ const SchedObject: React.FC = () => {
 
     const checkFlag = (task: Task) => {
         let long = task.endTime.hour + task.endTime.minute / 60 - task.beginTime.hour - task.beginTime.minute / 60;
+
+        if (long < 0) {
+            long += 24;
+        }
+        
         if (long < 6) {
             return 0;
-        } else if (long >= 6) {
-            return 1;
         } else {
-            return 0;
+            return 1;
         }
     }
     return (
