@@ -4,6 +4,16 @@ type Props = {
     date: Date;
 };
 
+type Task = {
+    beginTime: TimeItem,
+    endTime: TimeItem
+};
+
+type TimeItem = {
+    hour: number,
+    minute: number
+};
+
 const ClockScale: React.FC = () => { // pannel    
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
@@ -14,37 +24,22 @@ const ClockScale: React.FC = () => { // pannel
 };
 
 const ClockHands: React.FC<Props> = ( props ) => { // hands
-    const getTransformAttr = ( degree: number ) => {
-        const val = "rotate(" + degree + ")";
-        return val;
-    };
 
-    const [degreeSeconds, setDegreeSeconds] = useState((props.date.getSeconds() / 60) * 360 + (props.date.getMilliseconds() / 1000) * (360 / 60));
-    const [degreeMinutes, setDegreeMinutes] = useState((props.date.getMinutes() / 60) * 360 + ((degreeSeconds / 360) * (360 / 60)));
-    const [degreeHours, setDegreeHours] = useState((props.date.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
+    const [degreeSeconds, setDegreeSeconds] = useState(0);
+    const [degreeMinutes, setDegreeMinutes] = useState(0);
+    const [degreeHours, setDegreeHours] = useState(0);
 
     useEffect(() => {
-        setDegreeSeconds((props.date.getSeconds() / 60) * 360 + (props.date.getMilliseconds() / 1000) * (360 / 60)); 
-        setDegreeMinutes((props.date.getMinutes() / 60) * 360 + ((degreeSeconds / 360) * (360 / 60)));
-        setDegreeHours((props.date.getHours() / 12) * 360 + ((degreeMinutes / 360) * (360 / 60)));
+        setDegreeSeconds((props.date.getSeconds() * (360 / 60)) + (props.date.getMilliseconds() * (360 / 60) / 1000)); 
+        setDegreeMinutes((props.date.getMinutes() * (360 / 60)) + (props.date.getSeconds() * (360 / 60) / 60) + (props.date.getMilliseconds() * ((360 / 60) / 60) / 1000));
+        setDegreeHours((props.date.getHours() * (360 / 12)) + (props.date.getMinutes() * ((360 / 12) / 60)) + (props.date.getSeconds() * ((360 / 12) / 60) / 60));
     }, [props.date]);
 
     return (
-        <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
-            <defs>
-                <g id = "def_hand_long">
-                    <polygon points = "-8,-440 8,-440 5,-250 -5,-250" fill = "#888" />
-                </g>
-                <g id = "def_hand_short">
-                    <polygon points = "-10,-440 10,-440 5,-300 -5,-300" fill = "#888" />
-                </g>
-                <g id = "def_hand_second">
-                    <polygon points = "-5,-440 5,-440 3,-250 -3,-250" fill = "#CCC" />
-                </g>
-            </defs>
-            <use id = "hand_long" xlinkHref = "#def_hand_long" transform = {getTransformAttr(degreeMinutes)} ></use>
-            <use id = "hand_short" xlinkHref = "#def_hand_short" transform = {getTransformAttr(degreeHours)} ></use>
-            <use id = "hand_second" xlinkHref = "#def_hand_second" transform = {getTransformAttr(degreeSeconds)} ></use>
+        <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000" >
+            <polygon points = "-8,-440 8,-440 5,-250 -5,-250" fill = "#888" transform = { "rotate(" + degreeMinutes + ")" }/>
+            <polygon points = "-10,-440 10,-440 5,-300 -5,-300" fill = "#888" transform = { "rotate(" + degreeHours + ")" }/>
+            <polygon points = "-5,-440 5,-440 3,-250 -3,-250" fill = "#CCC" transform = { "rotate(" + degreeSeconds + ")" }/>
         </svg>
     );
 };
@@ -57,8 +52,68 @@ const DigitalClock: React.FC<Props> = ( props ) => {
     );
 };
 
+const SchedObject: React.FC = () => {
+    const [tasks, setTasks] = useState<Task[]>([]);
+
+    useEffect(() => {
+        const item = localStorage.getItem("tasks");
+        if (item) {
+            const tasksItem: Task[] = JSON.parse(item);
+            setTasks(tasksItem);
+        };
+    }, []);
+
+    useEffect(() => {
+        const item = localStorage.getItem("tasks");
+        if (item) {
+            const tasksItem: Task[] = JSON.parse(item);
+            setTasks(tasksItem);
+        };
+    }, [localStorage.getItem("tasks")]);    
+
+    const timeToDegree = (timeItem: TimeItem) => {
+        return (((timeItem.hour * (360 / 12)) + (timeItem.minute * ((360 / 12) / 60))) / 180);
+    };
+
+    const checkFlag = (task: Task) => {
+        let long = task.endTime.hour + task.endTime.minute - task.beginTime.hour - task.beginTime.minute;
+        if (long < 6) {
+            return 0;
+        } else if (long >= 6) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    return (
+        <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
+            {
+                tasks.map((task, index) => {
+                    return(
+                        <path
+                          id = {"task" + index }
+                          stroke = "black"
+                          d = {
+                            "M 0 0 " +
+                            "L " + 
+                            (Math.cos(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * 440) + " " +
+                            (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * 440) +
+                            "A 440 440 0 " + checkFlag(task) + " 1 " +
+                            (Math.cos(Math.PI * (timeToDegree(task.endTime) - 0.5)) * 440) + " " +
+                            (Math.sin(Math.PI * (timeToDegree(task.endTime) - 0.5)) * 440) +
+                            "L 0 0"
+                          }
+                          fill="red"
+                        />
+                    );
+                })
+            }
+        </svg>
+    );
+};
+
 const ClockApplication: React.FC = () => { // clock app
-    
+
     const [now, setNow] = useState(new Date().getTime());
     const [targetDate, setTargetDate] = useState(new Date());
 
@@ -78,9 +133,10 @@ const ClockApplication: React.FC = () => { // clock app
 
     return (
         <section style = {ClockAppStyle}>
-            <div> <ClockScale /> </div>
-            <div> <ClockHands date = {targetDate}/> </div>
-            <div> <DigitalClock date = {targetDate}/> </div>
+            <ClockScale />
+            <ClockHands date = {targetDate}/>
+            <DigitalClock date = {targetDate}/>
+            <SchedObject />
         </section>
     );
 };
