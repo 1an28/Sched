@@ -54,7 +54,10 @@ const DigitalClock: React.FC<Props> = ( props ) => {
 
 const SchedObject: React.FC = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
-
+    //The clock's radius is 440.
+    //const [schedThick, setSchedThick] = useState(0);
+    const schedThick = 350;
+    
     useEffect(() => {
         const item = localStorage.getItem("tasks");
         if (item) {
@@ -76,7 +79,7 @@ const SchedObject: React.FC = () => {
     };
 
     const checkFlag = (task: Task) => {
-        let long = task.endTime.hour + task.endTime.minute - task.beginTime.hour - task.beginTime.minute;
+        let long = task.endTime.hour + task.endTime.minute / 60 - task.beginTime.hour - task.beginTime.minute / 60;
         if (long < 6) {
             return 0;
         } else if (long >= 6) {
@@ -94,14 +97,21 @@ const SchedObject: React.FC = () => {
                           id = {"task" + index }
                           stroke = "black"
                           d = {
-                            "M 0 0 " +
-                            "L " + 
+                            "M " + 
+                            (Math.cos(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * schedThick) + " " +
+                            (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * schedThick) + 
+                            "L " +
                             (Math.cos(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * 440) + " " +
-                            (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * 440) +
+                            (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * 440) + 
                             "A 440 440 0 " + checkFlag(task) + " 1 " +
                             (Math.cos(Math.PI * (timeToDegree(task.endTime) - 0.5)) * 440) + " " +
                             (Math.sin(Math.PI * (timeToDegree(task.endTime) - 0.5)) * 440) +
-                            "L 0 0"
+                            "L" +
+                            (Math.cos(Math.PI * (timeToDegree(task.endTime) - 0.5)) * schedThick) + " " +
+                            (Math.sin(Math.PI * (timeToDegree(task.endTime) - 0.5)) * schedThick) +
+                            "A " + schedThick + " " + schedThick + " 0 " + checkFlag(task) + " 0 " +
+                            (Math.cos(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * schedThick) + " " +
+                            (Math.sin(Math.PI * (timeToDegree(task.beginTime) - 0.5)) * schedThick)
                           }
                           fill="red"
                         />
