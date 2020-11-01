@@ -145,10 +145,10 @@ const ClockApplication: React.FC = () => { // clock app
 
     return (
         <section style = {ClockAppStyle}>
-            <ClockFrame />
-            <ClockHands date = {targetDate}/>
             <DigitalClock date = {targetDate}/>
             <SchedObject />
+            <ClockHands date = {targetDate}/>
+            <ClockFrame />
         </section>
     );
 };
