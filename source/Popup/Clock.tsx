@@ -17,7 +17,7 @@ type TimeItem = {
 const ClockFrame: React.FC = () => { // pannel    
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
-            <circle cx = "0" cy = "0" r = "430" fill = "none" stroke = "black" strokeWidth = "20"/>
+            <circle cx = "0" cy = "0" r = "435" fill = "none" stroke = "black" strokeWidth = "10"/>
         </svg>
     );
 };
