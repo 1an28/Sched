@@ -37,16 +37,16 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000" >
             <polygon points = "-8,-440 8,-440 5,-250 -5,-250" fill = "#888" transform = { "rotate(" + degreeMinutes + ")" } display = "none"/>
-            <polygon points = "-10,-440 10,-440 5,-300 -5,-300" fill = "#888" transform = { "rotate(" + degreeHours + ")" }/>
+            <polygon points = "-10,-440 10,-440 10,-180 -10,-180" fill = "black" transform = { "rotate(" + degreeHours + ")" }/>
             <polygon points = "-5,-440 5,-440 3,-250 -3,-250" fill = "#CCC" transform = { "rotate(" + degreeSeconds + ")" } display = "none"/>
         </svg>
-    );
+    );  
 };
 
 const DigitalClock: React.FC<Props> = ( props ) => {
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
-            <text fontSize = "100" textAnchor = "middle" dominantBaseline = "central"> {props.date.getHours()} : {props.date.getMinutes()} </text>
+            <text fontSize = "70" textAnchor = "middle" dominantBaseline = "central"> {props.date.getHours()} : {props.date.getMinutes()} </text>
         </svg>
     );
 };
