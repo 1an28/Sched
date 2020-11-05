@@ -44,9 +44,13 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
 };
 
 const DigitalClock: React.FC<Props> = ( props ) => {
+    const fontStyle: React.CSSProperties = {
+        fontFamily: "Century Gothic",
+        letterSpacing: "10px"
+    };
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
-            <text fontSize = "70" textAnchor = "middle" dominantBaseline = "central"> {props.date.getHours()} : {props.date.getMinutes()} </text>
+            <text style = {fontStyle} fontSize = "70" textAnchor = "middle" dominantBaseline = "central"> {props.date.getHours() + ":" + props.date.getMinutes()} </text>
         </svg>
     );
 };
