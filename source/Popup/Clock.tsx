@@ -37,8 +37,21 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000" >
             <polygon points = "-8,-440 8,-440 5,-250 -5,-250" fill = "#888" transform = { "rotate(" + degreeMinutes + ")" } display = "none"/>
-            <polygon points = "-10,-440 10,-440 10,-180 -10,-180" fill = "black" transform = { "rotate(" + degreeHours + ")" }/>
+            <polygon points = "-10,-440 10,-440 10,-180 -10,-180" fill = "black" transform = { "rotate(" + degreeHours + ")" } display = "none"/>
             <polygon points = "-5,-440 5,-440 3,-250 -3,-250" fill = "#CCC" transform = { "rotate(" + degreeSeconds + ")" } display = "none"/>
+            <path
+              id = "task"
+              stroke = "black"
+              d = {
+                "M -10 -430 " +
+                "L 10 -430 " +
+                "L 10 -180 " +
+                "L -10 -180 " +
+                "L -10 -430"
+              }
+              transform = { "rotate(" + degreeHours + ")" }
+              fill="black"
+            />
         </svg>
     );  
 };
