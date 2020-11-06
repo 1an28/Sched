@@ -17,7 +17,7 @@ type TimeItem = {
 const ClockFrame: React.FC = () => { // pannel    
     return (
         <svg width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
-            <circle cx = "0" cy = "0" r = "435" fill = "none" stroke = "black" strokeWidth = "10"/>
+            <circle cx = "0" cy = "0" r = "436.5" fill = "none" stroke = "black" strokeWidth = "13"/>
         </svg>
     );
 };
@@ -48,7 +48,6 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
                 "A 20 20 0 0 0 10 -410 " +
                 "L 10 -180 " +
                 "A 10 10 0 1 1 -10 -180 " +
-                //"L -10 -180 " +
                 "L -10 -410 " +
                 "A 20 20 0 0 0 -30 -430"
               }
