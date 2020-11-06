@@ -43,11 +43,14 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
               id = "task"
               stroke = "black"
               d = {
-                "M -10 -430 " +
-                "L 10 -430 " +
+                "M -30 -430 " +
+                "L 30 -430 " +
+                "A 20 20 0 0 0 10 -410 " +
                 "L 10 -180 " +
-                "L -10 -180 " +
-                "L -10 -430"
+                "A 10 10 0 1 1 -10 -180 " +
+                //"L -10 -180 " +
+                "L -10 -410 " +
+                "A 20 20 0 0 0 -30 -430"
               }
               transform = { "rotate(" + degreeHours + ")" }
               fill="black"
