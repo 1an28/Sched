@@ -40,7 +40,6 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
             <polygon points = "-10,-440 10,-440 10,-180 -10,-180" fill = "black" transform = { "rotate(" + degreeHours + ")" } display = "none"/>
             <polygon points = "-5,-440 5,-440 3,-250 -3,-250" fill = "#CCC" transform = { "rotate(" + degreeSeconds + ")" } display = "none"/>
             <path
-              id = "task"
               stroke = "black"
               d = {
                 "M -30 -430 " +

@@ -3,6 +3,7 @@ import React from 'react';
 
 import Clock from "./Clock";
 import Form from "./Form";
+import Sched from "./Sched";
 
 import './styles.scss';
 
@@ -16,6 +17,7 @@ const Popup: React.FC = () => {
   return (
     <section id="popup">
       <Clock />
+      <Sched />
       <Form />
     </section>
   );
