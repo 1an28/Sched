@@ -5,13 +5,8 @@ type Props = {
 };
 
 type Task = {
-    beginTime: TimeItem,
-    endTime: TimeItem
-};
-
-type TimeItem = {
-    hour: number,
-    minute: number
+    beginTime: Date,
+    endTime: Date
 };
 
 const ClockFrame: React.FC = () => { // pannel    
@@ -78,16 +73,20 @@ const SchedObject: React.FC = () => {
     useEffect(() => {
         const item = localStorage.getItem("tasks");
         if (item) {
-            const tasksItem: Task[] = JSON.parse(item);
-            setTasks(tasksItem);
+            const tasksItemA: Task[] = JSON.parse(item);
+            const tasksItemB: Task[] = [];
+            tasksItemA.forEach(task => tasksItemB.push({beginTime: new Date(task.beginTime) , endTime: new Date(task.endTime)}));
+            setTasks(tasksItemB);
         };
     }, []);
 
     useEffect(() => {
         const item = localStorage.getItem("tasks");
         if (item) {
-            const tasksItem: Task[] = JSON.parse(item);
-            setTasks(tasksItem);
+            const tasksItemA: Task[] = JSON.parse(item);
+            const tasksItemB: Task[] = [];
+            tasksItemA.forEach(task => tasksItemB.push({beginTime: new Date(task.beginTime) , endTime: new Date(task.endTime)}));
+            setTasks(tasksItemB);
         };
     }, [localStorage.getItem("tasks")]);    
 
@@ -96,7 +95,7 @@ const SchedObject: React.FC = () => {
     };
 
     const checkFlag = (task: Task) => {
-        let long = task.endTime.hour + task.endTime.minute / 60 - task.beginTime.hour - task.beginTime.minute / 60;
+        let long = task.endTime.getHours() + task.endTime.getMinutes() / 60 - task.beginTime.getHours() - task.beginTime.getMinutes() / 60;
 
         if (long < 0) {
             long += 24;
@@ -117,36 +116,36 @@ const SchedObject: React.FC = () => {
                           id = {"task" + index }
                           d = {
                             "M " + 
-                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * (430 - schedThick)) + " " +
                             "A 30 30 0 0 1 " +
-                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * 430) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * 430) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * 430) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * 430) + " " +
                             "A 440 440 0 " + checkFlag(task) + " 1 " +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 8) - 0.5)) * 430) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 8) - 0.5)) * 430) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 8) - 0.5)) * 430) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 8) - 0.5)) * 430) + " " +
                             "L" +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 8) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 8) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 8) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 8) - 0.5)) * (430 - schedThick)) + " " +
                             "A " + (430 - schedThick) + " " + (430 - schedThick) + " 0 " + checkFlag(task) + " 0 " +
-                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * (430 - schedThick)) + " " +
 
                             "M " + 
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * (430 - schedThick)) + " " +
                             "L " +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * 430) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * 430) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * 430) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * 430) + " " +
                             "A 440 440 0 0 1 " +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute) - 0.5)) * 430) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute) - 0.5)) * 430) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes()) - 0.5)) * 430) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes()) - 0.5)) * 430) + " " +
                             "L" +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes()) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes()) - 0.5)) * (430 - schedThick)) + " " +
                             "A " + (430 - schedThick) + " " + (430 - schedThick) + " 0 0 0 " +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * (430 - schedThick))
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * (430 - schedThick))
                             
                           }
                           fill="#E17477"

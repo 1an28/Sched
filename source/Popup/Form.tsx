@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
+
+import { TimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from '@date-io/date-fns';
+import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+
 //import {browser} from 'webextension-polyfill-ts';
 
 type Task = {
-    beginTime: TimeItem,
-    endTime: TimeItem
-};
-
-type TimeItem = {
-    hour: number,
-    minute: number
+    beginTime: Date,
+    endTime: Date
 };
 
 const Form: React.FC = () => {
-    const [beginTime, setBeginTime] = useState<TimeItem>({hour: 0, minute: 0});
-    const [endTime, setEndTime] = useState<TimeItem>({hour: 0, minute: 0});
+    const [beginTime, setBeginTime] = useState(new Date());
+    const [endTime, setEndTime] = useState(new Date());
     const [tasks, setTasks] = useState<Task[]>([]);
     
     useEffect(() => {
@@ -24,9 +24,7 @@ const Form: React.FC = () => {
         };
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    }, [tasks]);
+    useEffect(() => localStorage.setItem("tasks", JSON.stringify(tasks)), [tasks]);
 
     const handleSubmit = ( event: React.FormEvent<HTMLFormElement> ) => {
         event.preventDefault();
@@ -37,47 +35,26 @@ const Form: React.FC = () => {
         setTasks(tasks.concat(addTask));
     };
     
-    const BeginHandleChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        const result = event.currentTarget.value;
-        const resultSplit = result.split(":");
-        const hourItem = parseInt(resultSplit[0]);
-        const minuteItem = parseInt(resultSplit[1]);
-        setBeginTime({hour: hourItem, minute: minuteItem});
+    const BeginHandleChange = ( date: MaterialUiPickersDate ) => {
+        if (date) {
+            setBeginTime(date);
+        };
     };
 
-    const EndHandleChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        const result = event.currentTarget.value;
-        const resultSplit = result.split(":");
-        const hourItem = parseInt(resultSplit[0]);
-        const minuteItem = parseInt(resultSplit[1]);
-        setEndTime({hour: hourItem, minute: minuteItem});
-    };
-
-    const handleClick = ( index: number ) => {
-        tasks.splice(index, 1);
-        setTasks([...tasks]);
+    const EndHandleChange = ( date: MaterialUiPickersDate ) => {
+        if (date) {
+            setEndTime(date);
+        };
     };
 
     return(
-        <section>
-            <ul>
-                {
-                    tasks.map((task, index) => {
-                        return(
-                            <li>
-                                <p> {task.beginTime.hour} : {task.beginTime.minute} - {task.endTime.hour} : {task.endTime.minute} </p>
-                                <button onClick = { () => handleClick(index) } > ✕ </button>
-                            </li>
-                        );
-                    })
-                }
-            </ul>
+        <MuiPickersUtilsProvider utils = {DateFnsUtils}>
             <form onSubmit = {handleSubmit}>
-                <input type = "time" onChange = {BeginHandleChange} />
-                <input type = "time" onChange = {EndHandleChange} />
+                <TimePicker autoOk label="12 hours" value={beginTime} onChange={BeginHandleChange}/>
+                <TimePicker autoOk label="12 hours" value={endTime} onChange={EndHandleChange}/>
                 <input type = "submit" />
             </form>
-        </section>
+        </MuiPickersUtilsProvider>
         
     );
 };
