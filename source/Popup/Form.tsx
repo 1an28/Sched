@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-
 import { TimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import MaterialIcon from '@material/react-material-icon';
+import IconButton from '@material/react-icon-button';
 
 //import {browser} from 'webextension-polyfill-ts';
 
@@ -26,8 +27,7 @@ const Form: React.FC = () => {
 
     useEffect(() => localStorage.setItem("tasks", JSON.stringify(tasks)), [tasks]);
 
-    const handleSubmit = ( event: React.FormEvent<HTMLFormElement> ) => {
-        event.preventDefault();
+    const addTask = () => {
         const addTask: Task = {
             beginTime: beginTime,
             endTime: endTime
@@ -47,15 +47,21 @@ const Form: React.FC = () => {
         };
     };
 
+    const formCss: React.CSSProperties = {
+        display: "flex",
+        justifyContent: "safe center",
+    }
+
     return(
-        <MuiPickersUtilsProvider utils = {DateFnsUtils}>
-            <form onSubmit = {handleSubmit}>
-                <TimePicker autoOk label="12 hours" value={beginTime} onChange={BeginHandleChange}/>
-                <TimePicker autoOk label="12 hours" value={endTime} onChange={EndHandleChange}/>
-                <input type = "submit" />
-            </form>
-        </MuiPickersUtilsProvider>
-        
+        <div style = {formCss}>
+            <MuiPickersUtilsProvider utils = {DateFnsUtils}>
+                <TimePicker autoOk value={beginTime} onChange={BeginHandleChange}/>
+                <TimePicker autoOk value={endTime} onChange={EndHandleChange}/>
+                <IconButton onClick = {addTask}>
+                    <MaterialIcon icon='add_task'/>
+                </IconButton>
+            </MuiPickersUtilsProvider>
+        </div>
     );
 };
 

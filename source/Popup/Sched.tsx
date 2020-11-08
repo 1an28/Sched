@@ -12,7 +12,6 @@ const Sched: React.FC = () => {
     const listItemCss: React.CSSProperties = {
         display: "flex",
         justifyContent: "space-between"
-
     }
 
     return (
