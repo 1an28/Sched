@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { TimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
@@ -12,38 +12,22 @@ type Task = {
     endTime: Date
 };
 
-const Form: React.FC = () => {
-    const [beginTime, setBeginTime] = useState(new Date());
-    const [endTime, setEndTime] = useState(new Date());
-    const [tasks, setTasks] = useState<Task[]>([]);
-    
-    useEffect(() => {
-        const item = localStorage.getItem("tasks");
-        if (item) {
-            const tasksItem: Task[] = JSON.parse(item);
-            setTasks(tasksItem);
-        };
-    }, []);
+type Props = {
+    addTask: (addItem: Task) => void;
+}
 
-    useEffect(() => localStorage.setItem("tasks", JSON.stringify(tasks)), [tasks]);
-
-    const addTask = () => {
-        const addTask: Task = {
-            beginTime: beginTime,
-            endTime: endTime
-        };
-        setTasks(tasks.concat(addTask));
-    };
+const Form: React.FC<Props> = (props) => {
+    const [addItem, setAddItem] = useState<Task>({beginTime: new Date, endTime: new Date});
     
     const BeginHandleChange = ( date: MaterialUiPickersDate ) => {
         if (date) {
-            setBeginTime(date);
+            setAddItem({beginTime: date, endTime: addItem.endTime});
         };
     };
 
     const EndHandleChange = ( date: MaterialUiPickersDate ) => {
         if (date) {
-            setEndTime(date);
+            setAddItem({beginTime: addItem.beginTime, endTime: date});
         };
     };
 
@@ -55,9 +39,9 @@ const Form: React.FC = () => {
     return(
         <div style = {formCss}>
             <MuiPickersUtilsProvider utils = {DateFnsUtils}>
-                <TimePicker autoOk value={beginTime} onChange={BeginHandleChange}/>
-                <TimePicker autoOk value={endTime} onChange={EndHandleChange}/>
-                <IconButton onClick = {addTask}>
+                <TimePicker autoOk value={addItem.beginTime} onChange={BeginHandleChange}/>
+                <TimePicker autoOk value={addItem.endTime} onChange={EndHandleChange}/>
+                <IconButton onClick = {() => props.addTask(addItem)}>
                     <MaterialIcon icon='add_task'/>
                 </IconButton>
             </MuiPickersUtilsProvider>

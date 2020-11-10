@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-type Props = {
-    date: Date;
+type TasksProps = {
+    tasks: Task[];
 };
+
+type DateProps = {
+    date: Date;
+}
 
 type Task = {
     beginTime: Date,
@@ -17,7 +21,7 @@ const ClockFrame: React.FC = () => { // pannel
     );
 };
 
-const ClockHands: React.FC<Props> = ( props ) => { // hands
+const ClockHands: React.FC<DateProps> = ( props ) => { // hands
 
     const [degreeSeconds, setDegreeSeconds] = useState(0);
     const [degreeMinutes, setDegreeMinutes] = useState(0);
@@ -52,7 +56,7 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
     );  
 };
 
-const DigitalClock: React.FC<Props> = ( props ) => {
+const DigitalClock: React.FC<DateProps> = ( props ) => {
     const fontStyle: React.CSSProperties = {
         fontFamily: "Century Gothic",
         letterSpacing: "10px"
@@ -64,31 +68,11 @@ const DigitalClock: React.FC<Props> = ( props ) => {
     );
 };
 
-const SchedObject: React.FC = () => {
-    const [tasks, setTasks] = useState<Task[]>([]);
+const SchedObject: React.FC<TasksProps> = (props) => {
+
     //The clock's radius is 430.
     const schedThick = 60;
     //3 minute == 10px
-
-    useEffect(() => {
-        const item = localStorage.getItem("tasks");
-        if (item) {
-            const tasksItemA: Task[] = JSON.parse(item);
-            const tasksItemB: Task[] = [];
-            tasksItemA.forEach(task => tasksItemB.push({beginTime: new Date(task.beginTime) , endTime: new Date(task.endTime)}));
-            setTasks(tasksItemB);
-        };
-    }, []);
-
-    useEffect(() => {
-        const item = localStorage.getItem("tasks");
-        if (item) {
-            const tasksItemA: Task[] = JSON.parse(item);
-            const tasksItemB: Task[] = [];
-            tasksItemA.forEach(task => tasksItemB.push({beginTime: new Date(task.beginTime) , endTime: new Date(task.endTime)}));
-            setTasks(tasksItemB);
-        };
-    }, [localStorage.getItem("tasks")]);    
 
     const numberToDegree = (hour: number, minute: number) => {
         return (((hour * (360 / 12)) + (minute * ((360 / 12) / 60))) / 180);
@@ -110,7 +94,7 @@ const SchedObject: React.FC = () => {
     return (
         <svg id = "schedObj" width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
             {
-                tasks.map((task, index) => {
+                props.tasks.map((task, index) => {
                     return(
                         <path
                           id = {"task" + index }
@@ -157,7 +141,7 @@ const SchedObject: React.FC = () => {
     );
 };
 
-const ClockApplication: React.FC = () => { // clock app
+const ClockApplication: React.FC<TasksProps> = (props) => { // clock app
 
     const [now, setNow] = useState(new Date().getTime());
     const [targetDate, setTargetDate] = useState(new Date());
@@ -179,16 +163,16 @@ const ClockApplication: React.FC = () => { // clock app
     return (
         <section style = {ClockAppStyle}>
             <DigitalClock date = {targetDate}/>
-            <SchedObject />
+            <SchedObject tasks = {props.tasks} />
             <ClockHands date = {targetDate}/>
             <ClockFrame />
         </section>
     );
 };
 
-const Clock: React.FC = () => {
+const Clock: React.FC<TasksProps> = (props) => {
     return (
-        <ClockApplication />
+        <ClockApplication tasks = {props.tasks}/>
     );
 };
 
