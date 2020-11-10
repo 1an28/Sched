@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-type Props = {
-    date: Date;
+type TasksProps = {
+    tasks: Task[];
 };
+
+type DateProps = {
+    date: Date;
+}
 
 type Task = {
-    beginTime: TimeItem,
-    endTime: TimeItem
-};
-
-type TimeItem = {
-    hour: number,
-    minute: number
+    beginTime: Date,
+    endTime: Date
 };
 
 const ClockFrame: React.FC = () => { // pannel    
@@ -22,7 +21,7 @@ const ClockFrame: React.FC = () => { // pannel
     );
 };
 
-const ClockHands: React.FC<Props> = ( props ) => { // hands
+const ClockHands: React.FC<DateProps> = ( props ) => { // hands
 
     const [degreeSeconds, setDegreeSeconds] = useState(0);
     const [degreeMinutes, setDegreeMinutes] = useState(0);
@@ -40,7 +39,6 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
             <polygon points = "-10,-440 10,-440 10,-180 -10,-180" fill = "black" transform = { "rotate(" + degreeHours + ")" } display = "none"/>
             <polygon points = "-5,-440 5,-440 3,-250 -3,-250" fill = "#CCC" transform = { "rotate(" + degreeSeconds + ")" } display = "none"/>
             <path
-              id = "task"
               stroke = "black"
               d = {
                 "M -30 -430 " +
@@ -58,7 +56,7 @@ const ClockHands: React.FC<Props> = ( props ) => { // hands
     );  
 };
 
-const DigitalClock: React.FC<Props> = ( props ) => {
+const DigitalClock: React.FC<DateProps> = ( props ) => {
     const fontStyle: React.CSSProperties = {
         fontFamily: "Century Gothic",
         letterSpacing: "10px"
@@ -70,34 +68,18 @@ const DigitalClock: React.FC<Props> = ( props ) => {
     );
 };
 
-const SchedObject: React.FC = () => {
-    const [tasks, setTasks] = useState<Task[]>([]);
+const SchedObject: React.FC<TasksProps> = (props) => {
+
     //The clock's radius is 430.
     const schedThick = 60;
     //3 minute == 10px
-
-    useEffect(() => {
-        const item = localStorage.getItem("tasks");
-        if (item) {
-            const tasksItem: Task[] = JSON.parse(item);
-            setTasks(tasksItem);
-        };
-    }, []);
-
-    useEffect(() => {
-        const item = localStorage.getItem("tasks");
-        if (item) {
-            const tasksItem: Task[] = JSON.parse(item);
-            setTasks(tasksItem);
-        };
-    }, [localStorage.getItem("tasks")]);    
 
     const numberToDegree = (hour: number, minute: number) => {
         return (((hour * (360 / 12)) + (minute * ((360 / 12) / 60))) / 180);
     };
 
     const checkFlag = (task: Task) => {
-        let long = task.endTime.hour + task.endTime.minute / 60 - task.beginTime.hour - task.beginTime.minute / 60;
+        let long = task.endTime.getHours() + task.endTime.getMinutes() / 60 - task.beginTime.getHours() - task.beginTime.getMinutes() / 60;
 
         if (long < 0) {
             long += 24;
@@ -112,42 +94,42 @@ const SchedObject: React.FC = () => {
     return (
         <svg id = "schedObj" width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
             {
-                tasks.map((task, index) => {
+                props.tasks.map((task, index) => {
                     return(
                         <path
                           id = {"task" + index }
                           d = {
                             "M " + 
-                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * (430 - schedThick)) + " " +
                             "A 30 30 0 0 1 " +
-                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * 430) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * 430) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * 430) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * 430) + " " +
                             "A 440 440 0 " + checkFlag(task) + " 1 " +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 8) - 0.5)) * 430) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 8) - 0.5)) * 430) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 8) - 0.5)) * 430) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 8) - 0.5)) * 430) + " " +
                             "L" +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 8) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 8) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 8) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 8) - 0.5)) * (430 - schedThick)) + " " +
                             "A " + (430 - schedThick) + " " + (430 - schedThick) + " 0 " + checkFlag(task) + " 0 " +
-                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.hour, task.beginTime.minute + 10) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * (430 - schedThick)) + " " +
 
                             "M " + 
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * (430 - schedThick)) + " " +
                             "L " +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * 430) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * 430) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * 430) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * 430) + " " +
                             "A 440 440 0 0 1 " +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute) - 0.5)) * 430) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute) - 0.5)) * 430) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes()) - 0.5)) * 430) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes()) - 0.5)) * 430) + " " +
                             "L" +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes()) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes()) - 0.5)) * (430 - schedThick)) + " " +
                             "A " + (430 - schedThick) + " " + (430 - schedThick) + " 0 0 0 " +
-                            (Math.cos(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * (430 - schedThick)) + " " +
-                            (Math.sin(Math.PI * (numberToDegree(task.endTime.hour, task.endTime.minute - 5) - 0.5)) * (430 - schedThick))
+                            (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * (430 - schedThick)) + " " +
+                            (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * (430 - schedThick))
                             
                           }
                           fill="#E17477"
@@ -159,7 +141,7 @@ const SchedObject: React.FC = () => {
     );
 };
 
-const ClockApplication: React.FC = () => { // clock app
+const ClockApplication: React.FC<TasksProps> = (props) => { // clock app
 
     const [now, setNow] = useState(new Date().getTime());
     const [targetDate, setTargetDate] = useState(new Date());
@@ -181,16 +163,16 @@ const ClockApplication: React.FC = () => { // clock app
     return (
         <section style = {ClockAppStyle}>
             <DigitalClock date = {targetDate}/>
-            <SchedObject />
+            <SchedObject tasks = {props.tasks} />
             <ClockHands date = {targetDate}/>
             <ClockFrame />
         </section>
     );
 };
 
-const Clock: React.FC = () => {
+const Clock: React.FC<TasksProps> = (props) => {
     return (
-        <ClockApplication />
+        <ClockApplication tasks = {props.tasks}/>
     );
 };
 

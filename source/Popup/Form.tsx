@@ -1,84 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { TimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from '@date-io/date-fns';
+import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import MaterialIcon from '@material/react-material-icon';
+import IconButton from '@material/react-icon-button';
+
 //import {browser} from 'webextension-polyfill-ts';
 
 type Task = {
-    beginTime: TimeItem,
-    endTime: TimeItem
+    beginTime: Date,
+    endTime: Date
 };
 
-type TimeItem = {
-    hour: number,
-    minute: number
-};
+type Props = {
+    addTask: (addItem: Task) => void;
+}
 
-const Form: React.FC = () => {
-    const [beginTime, setBeginTime] = useState<TimeItem>({hour: 0, minute: 0});
-    const [endTime, setEndTime] = useState<TimeItem>({hour: 0, minute: 0});
-    const [tasks, setTasks] = useState<Task[]>([]);
+const Form: React.FC<Props> = (props) => {
+    const [addItem, setAddItem] = useState<Task>({beginTime: new Date, endTime: new Date});
     
-    useEffect(() => {
-        const item = localStorage.getItem("tasks");
-        if (item) {
-            const tasksItem: Task[] = JSON.parse(item);
-            setTasks(tasksItem);
+    const BeginHandleChange = ( date: MaterialUiPickersDate ) => {
+        if (date) {
+            setAddItem({beginTime: date, endTime: addItem.endTime});
         };
-    }, []);
+    };
 
-    useEffect(() => {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    }, [tasks]);
-
-    const handleSubmit = ( event: React.FormEvent<HTMLFormElement> ) => {
-        event.preventDefault();
-        const addTask: Task = {
-            beginTime: beginTime,
-            endTime: endTime
+    const EndHandleChange = ( date: MaterialUiPickersDate ) => {
+        if (date) {
+            setAddItem({beginTime: addItem.beginTime, endTime: date});
         };
-        setTasks(tasks.concat(addTask));
-    };
-    
-    const BeginHandleChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        const result = event.currentTarget.value;
-        const resultSplit = result.split(":");
-        const hourItem = parseInt(resultSplit[0]);
-        const minuteItem = parseInt(resultSplit[1]);
-        setBeginTime({hour: hourItem, minute: minuteItem});
     };
 
-    const EndHandleChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        const result = event.currentTarget.value;
-        const resultSplit = result.split(":");
-        const hourItem = parseInt(resultSplit[0]);
-        const minuteItem = parseInt(resultSplit[1]);
-        setEndTime({hour: hourItem, minute: minuteItem});
-    };
-
-    const handleClick = ( index: number ) => {
-        tasks.splice(index, 1);
-        setTasks([...tasks]);
-    };
+    const formCss: React.CSSProperties = {
+        display: "flex",
+        justifyContent: "safe center",
+    }
 
     return(
-        <section>
-            <ul>
-                {
-                    tasks.map((task, index) => {
-                        return(
-                            <li>
-                                <p> {task.beginTime.hour} : {task.beginTime.minute} - {task.endTime.hour} : {task.endTime.minute} </p>
-                                <button onClick = { () => handleClick(index) } > ✕ </button>
-                            </li>
-                        );
-                    })
-                }
-            </ul>
-            <form onSubmit = {handleSubmit}>
-                <input type = "time" onChange = {BeginHandleChange} />
-                <input type = "time" onChange = {EndHandleChange} />
-                <input type = "submit" />
-            </form>
-        </section>
-        
+        <div style = {formCss}>
+            <MuiPickersUtilsProvider utils = {DateFnsUtils}>
+                <TimePicker autoOk value={addItem.beginTime} onChange={BeginHandleChange}/>
+                <TimePicker autoOk value={addItem.endTime} onChange={EndHandleChange}/>
+                <IconButton onClick = {() => props.addTask(addItem)}>
+                    <MaterialIcon icon='add_task'/>
+                </IconButton>
+            </MuiPickersUtilsProvider>
+        </div>
     );
 };
 
