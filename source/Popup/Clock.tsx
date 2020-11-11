@@ -79,18 +79,10 @@ const SchedObject: React.FC<TasksProps> = (props) => {
     };
 
     const checkFlag = (task: Task) => {
-        let long = task.endTime.getHours() + task.endTime.getMinutes() / 60 - task.beginTime.getHours() - task.beginTime.getMinutes() / 60;
-
-        if (long < 0) {
-            long += 24;
-        }
+        const long = (task.endTime.getTime() - task.beginTime.getTime()) / 3600000;
+        return ( long < 6 ? 0 : 1 );
+    };
         
-        if (long < 6) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
     return (
         <svg id = "schedObj" width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
             {
