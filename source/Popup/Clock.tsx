@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 type TasksProps = {
     tasks: Task[];
+    deleteTask: (index: number) => void;
 };
 
 type DateProps = {
@@ -142,6 +143,12 @@ const ClockApplication: React.FC<TasksProps> = (props) => { // clock app
         const timerId = setInterval(() => {
             setNow(new Date().getTime());
             setTargetDate(new Date(now));
+            props.tasks.forEach((task, index) => {
+                if (task.endTime.getHours() == targetDate.getHours() && task.endTime.getMinutes() == targetDate.getMinutes() + 1) {
+                    console.log("asdf");
+                    props.deleteTask(index);
+                };
+            });
         }, 100);
         return () => clearInterval(timerId);
     });
@@ -155,7 +162,7 @@ const ClockApplication: React.FC<TasksProps> = (props) => { // clock app
     return (
         <section style = {ClockAppStyle}>
             <DigitalClock date = {targetDate}/>
-            <SchedObject tasks = {props.tasks} />
+            <SchedObject tasks = {props.tasks} deleteTask = {props.deleteTask} />
             <ClockHands date = {targetDate}/>
             <ClockFrame />
         </section>
@@ -164,7 +171,7 @@ const ClockApplication: React.FC<TasksProps> = (props) => { // clock app
 
 const Clock: React.FC<TasksProps> = (props) => {
     return (
-        <ClockApplication tasks = {props.tasks}/>
+        <ClockApplication tasks = {props.tasks} deleteTask = {props.deleteTask}/>
     );
 };
 

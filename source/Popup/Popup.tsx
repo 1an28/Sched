@@ -18,7 +18,7 @@ const Popup: React.FC = () => {
 
     return (
         <section id="popup">
-        <Clock tasks = {tasks}/>
+        <Clock tasks = {tasks} deleteTask = {deleteTask}/>
         <Sched tasks = {tasks} deleteTask = {deleteTask}/>
         <Form addTask = {addTask}/>
         </section>
