@@ -40,6 +40,7 @@ const Form: React.FC<Props> = (props) => {
         <div style = {formCss}>
             <MuiPickersUtilsProvider utils = {DateFnsUtils}>
                 <TimePicker autoOk value={addItem.beginTime} onChange={BeginHandleChange}/>
+                <MaterialIcon icon='arrow_forward'/>
                 <TimePicker autoOk value={addItem.endTime} onChange={EndHandleChange}/>
                 <IconButton onClick = {() => props.addTask(addItem)}>
                     <MaterialIcon icon='add_task'/>
