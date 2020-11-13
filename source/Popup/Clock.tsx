@@ -145,7 +145,6 @@ const ClockApplication: React.FC<TasksProps> = (props) => { // clock app
             setTargetDate(new Date(now));
             props.tasks.forEach((task, index) => {
                 if (task.endTime.getHours() == targetDate.getHours() && task.endTime.getMinutes() == targetDate.getMinutes() + 1) {
-                    console.log("asdf");
                     props.deleteTask(index);
                 };
             });
