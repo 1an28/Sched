@@ -23,21 +23,29 @@ const Sched: React.FC<Props> = ( props ) => {
         justifyContent: "space-between"
     }
 
+    const listCss: React.CSSProperties = {
+        margin: "20px 0"
+    }
+
     return (
-        <List>
-            {
-                props.tasks.map((task, index) => {
-                    return(
-                        <ListItem style = {listItemCss}>
-                            <ListItemText primaryText={ task.beginTime.getHours() + ":" + task.beginTime.getMinutes() + "-" + task.endTime.getHours() + ":" + task.endTime.getMinutes() }/>
-                            <IconButton onClick = {() => props.deleteTask(index)} >
-                                <ListItemGraphic graphic={<MaterialIcon icon='remove_circle_outline'/>}/>
-                            </IconButton>
-                        </ListItem>
-                    );
-                })
-            }
-        </List>
+        <div style = {listCss}>
+            <List>
+                {
+                    props.tasks.map((task, index) => {
+                        return(
+                            <ListItem style = {listItemCss}>
+                                <ListItemText secondaryText = "BEGIN" primaryText={task.beginTime.getMonth() + "/" + task.beginTime.getDay() + "_" + task.beginTime.getHours() + ":" + task.beginTime.getMinutes()}/>
+                                <ListItemText secondaryText = "END" primaryText={task.endTime.getMonth() + "/" + task.endTime.getDay() + "_" + task.endTime.getHours() + ":" + task.endTime.getMinutes()}/>
+                                <IconButton onClick = {() => props.deleteTask(index)} >
+                                    <ListItemGraphic graphic={<MaterialIcon icon='remove_circle_outline'/>}/>
+                                </IconButton>
+                            </ListItem>
+                        );
+                    })
+                }
+            </List>
+        </div>
+        
     );
 };
 

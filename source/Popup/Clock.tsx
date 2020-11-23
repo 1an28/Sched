@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 type TasksProps = {
     tasks: Task[];
+    deleteTask: (index: number) => void;
 };
 
 type DateProps = {
@@ -79,18 +80,10 @@ const SchedObject: React.FC<TasksProps> = (props) => {
     };
 
     const checkFlag = (task: Task) => {
-        let long = task.endTime.getHours() + task.endTime.getMinutes() / 60 - task.beginTime.getHours() - task.beginTime.getMinutes() / 60;
-
-        if (long < 0) {
-            long += 24;
-        }
+        const long = (task.endTime.getTime() - task.beginTime.getTime()) / 3600000;
+        return ( long < 6 ? 0 : 1 );
+    };
         
-        if (long < 6) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
     return (
         <svg id = "schedObj" width = "100%" height = "100%" viewBox = "-500 -500 1000 1000">
             {
@@ -150,6 +143,11 @@ const ClockApplication: React.FC<TasksProps> = (props) => { // clock app
         const timerId = setInterval(() => {
             setNow(new Date().getTime());
             setTargetDate(new Date(now));
+            props.tasks.forEach((task, index) => {
+                if (task.endTime.getHours() == targetDate.getHours() && task.endTime.getMinutes() == targetDate.getMinutes() + 1) {
+                    props.deleteTask(index);
+                };
+            });
         }, 100);
         return () => clearInterval(timerId);
     });
@@ -163,7 +161,7 @@ const ClockApplication: React.FC<TasksProps> = (props) => { // clock app
     return (
         <section style = {ClockAppStyle}>
             <DigitalClock date = {targetDate}/>
-            <SchedObject tasks = {props.tasks} />
+            <SchedObject tasks = {props.tasks} deleteTask = {props.deleteTask} />
             <ClockHands date = {targetDate}/>
             <ClockFrame />
         </section>
@@ -172,7 +170,7 @@ const ClockApplication: React.FC<TasksProps> = (props) => { // clock app
 
 const Clock: React.FC<TasksProps> = (props) => {
     return (
-        <ClockApplication tasks = {props.tasks}/>
+        <ClockApplication tasks = {props.tasks} deleteTask = {props.deleteTask}/>
     );
 };
 

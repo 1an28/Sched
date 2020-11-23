@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import MaterialIcon from '@material/react-material-icon';
@@ -31,20 +31,43 @@ const Form: React.FC<Props> = (props) => {
         };
     };
 
-    const formCss: React.CSSProperties = {
-        display: "flex",
-        justifyContent: "safe center",
+    const flexCss: React.CSSProperties = {
+        display: "flex"
+    }
+
+    const buttonCss: React.CSSProperties = {
+        margin: "auto"
     }
 
     return(
-        <div style = {formCss}>
-            <MuiPickersUtilsProvider utils = {DateFnsUtils}>
-                <TimePicker autoOk value={addItem.beginTime} onChange={BeginHandleChange}/>
-                <TimePicker autoOk value={addItem.endTime} onChange={EndHandleChange}/>
-                <IconButton onClick = {() => props.addTask(addItem)}>
-                    <MaterialIcon icon='add_task'/>
-                </IconButton>
-            </MuiPickersUtilsProvider>
+        
+        <div style = {flexCss} >
+            <div>
+                <MuiPickersUtilsProvider utils = {DateFnsUtils}>
+                    <DateTimePicker
+                      value={addItem.beginTime}
+                      onChange={BeginHandleChange}
+                      inputVariant = "outlined"
+                      label = "BEGIN"
+                      disablePast
+                      minDate={new Date}
+                      helperText=" "
+                    />
+                </MuiPickersUtilsProvider>
+                <MuiPickersUtilsProvider utils = {DateFnsUtils}>
+                    <DateTimePicker
+                      value={addItem.endTime}
+                      onChange={EndHandleChange}
+                      inputVariant = "outlined"
+                      label = "END"
+                      disablePast
+                      minDate={new Date(addItem.beginTime)}
+                    />
+                </MuiPickersUtilsProvider>
+            </div>
+            <IconButton style = {buttonCss} onClick = {() => props.addTask(addItem)}  >
+                <MaterialIcon icon='add_task'/>
+            </IconButton>
         </div>
     );
 };
