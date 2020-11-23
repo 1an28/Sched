@@ -1,0 +1,8 @@
+svg {
+    position: absolute;
+}
+
+#popup {
+    min-width: 330px;
+    min-height: 400px;
+}

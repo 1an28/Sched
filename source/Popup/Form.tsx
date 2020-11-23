@@ -5,8 +5,6 @@ import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import MaterialIcon from '@material/react-material-icon';
 import IconButton from '@material/react-icon-button';
 
-//import {browser} from 'webextension-polyfill-ts';
-
 type Task = {
     beginTime: Date,
     endTime: Date
