@@ -19,12 +19,13 @@ export const useTasks = () => {
         return tasksItem;
     };
     const [tasks, setTasks] = useState(initialTasks);
-    
+    //const [displayTasks, setDisplayTasks] = useState<Task[]>([]);
+
     useEffect(() => localStorage.setItem("tasks", JSON.stringify(tasks)), [tasks]);
 
     const addTask = ( addItem: Task ) => {
-        if ( addItem.beginTime.getTime() < addItem.endTime.getTime() ) {
-            setTasks(tasks.concat(addItem));
+        if ( addItem.beginTime < addItem.endTime ) {
+            setTasks([...tasks, addItem]);
         } else {
             alert("ERROR");
         };
