@@ -19,7 +19,7 @@ export const useTasks = () => {
         return tasksItem;
     };
     const [tasks, setTasks] = useState(initialTasks);
-    //const [displayTasks, setDisplayTasks] = useState<Task[]>([]);
+    const [displayTasks, setDisplayTasks] = useState<Task[]>([]);
 
     useEffect(() => localStorage.setItem("tasks", JSON.stringify(tasks)), [tasks]);
 
@@ -38,5 +38,5 @@ export const useTasks = () => {
         setTasks([...tasks]);
     };
 
-    return {tasks, addTask, deleteTask};
+    return {tasks, addTask, deleteTask, displayTasks, setDisplayTasks};
 };

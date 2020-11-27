@@ -8,6 +8,8 @@ type TasksProps = {
 type ClockAppProps = {
     tasks: Task[];
     deleteTask: (index: number) => void;
+    displayTasks: Task[];
+    setDisplayTasks: (addItem: Task[]) => void;
 };
 
 type DateProps = {
@@ -29,9 +31,21 @@ const ClockFrame: React.FC = () => { // pannel
 
 const ClockHands: React.FC<DateProps> = ( props ) => { // hands
 
-    const [degreeSeconds, setDegreeSeconds] = useState(0);
-    const [degreeMinutes, setDegreeMinutes] = useState(0);
-    const [degreeHours, setDegreeHours] = useState(0);
+    const initialDegree = (timeType: string) => {
+        if (timeType == "sec") {
+            return (props.date.getSeconds() * (360 / 60)) + (props.date.getMilliseconds() * (360 / 60) / 1000);
+        } else if (timeType == "min") {
+            return ((props.date.getMinutes() * (360 / 60)) + (props.date.getSeconds() * (360 / 60) / 60) + (props.date.getMilliseconds() * ((360 / 60) / 60) / 1000));
+        } else if (timeType == "hou") {
+            return ((props.date.getHours() * (360 / 12)) + (props.date.getMinutes() * ((360 / 12) / 60)) + (props.date.getSeconds() * ((360 / 12) / 60) / 60));
+        } else {
+            return 0;
+        }
+    };
+
+    const [degreeSeconds, setDegreeSeconds] = useState(initialDegree("sec"));
+    const [degreeMinutes, setDegreeMinutes] = useState(initialDegree("min"));
+    const [degreeHours, setDegreeHours] = useState(initialDegree("hou"));
 
     useEffect(() => {
         setDegreeSeconds((props.date.getSeconds() * (360 / 60)) + (props.date.getMilliseconds() * (360 / 60) / 1000)); 
@@ -143,25 +157,34 @@ const SchedObject: React.FC<TasksProps> = (props) => {
 const ClockApplication: React.FC<ClockAppProps> = (props) => { // clock app
 
     const [now, setNow] = useState(new Date());
-    //const [after12, setAfter12] = useState(new Date(now.getHours() + 12));
+    const [after12, setAfter12] = useState(new Date());
+    const [taskProgress, setTaskProgress] = useState(false);
+
     useEffect(() => {
         const timerId = setInterval(() => {
             setNow(new Date());
-            //setAfter12(new Date(now.getHours() + 12));
+            const add12Hour = new Date(now);
+            add12Hour.setHours(add12Hour.getHours() + 12);
+            setAfter12(add12Hour);
+            const addItems: Task[] = [];
             props.tasks.forEach((task, index) => {
-                //const addDisplayTasks: Task[] = [];
-                if (task.endTime.getTime() < now.getTime()) {
-                    props.deleteTask(index);
-                }; // Finish task was Deleted.
+                if ((now.getTime() < task.endTime.getTime() && task.endTime.getTime() < after12.getTime()) && task.beginTime.getTime() < now.getTime()) {
+                    setTaskProgress(true);
+                } else {
+                    setTaskProgress(false);
+                };
 
-                if (task.beginTime.getTime() < now.getTime() && now.getTime() < task.endTime.getTime()) {
-                    console.log("Task is progress.");
-                };
-                /* if (after12 < task.endTime) {
-                    addDisplayTasks.push({beginTime: task.beginTime, endTime: after12});
-                };
-                props.setDisplayTasks(addDisplayTasks); */
+                if (taskProgress) {
+                    addItems.push(task);
+                } else {
+                    if (task.endTime.getTime() < now.getTime()) {// Finish task was Deleted.
+                        props.deleteTask(index);
+                    } else if ( now.getTime() < task.beginTime.getTime() && task.beginTime.getTime() < after12.getTime() ) {
+                        addItems.push({beginTime: task.beginTime, endTime: (task.endTime.getTime() < after12.getTime() ? task.endTime : after12)});
+                    };
+                }
             });
+            props.setDisplayTasks(addItems);
         }, 100);
         return () => clearInterval(timerId);
     });
@@ -175,7 +198,7 @@ const ClockApplication: React.FC<ClockAppProps> = (props) => { // clock app
     return (
         <section style = {ClockAppStyle}>
             <DigitalClock date = {now}/>
-            <SchedObject tasks = {props.tasks} deleteTask = {props.deleteTask} />
+            <SchedObject tasks = {props.displayTasks} deleteTask = {props.deleteTask} />
             <ClockHands date = {now}/>
             <ClockFrame />
         </section>
@@ -184,7 +207,7 @@ const ClockApplication: React.FC<ClockAppProps> = (props) => { // clock app
 
 const Clock: React.FC<ClockAppProps> = (props) => {
     return (
-        <ClockApplication tasks = {props.tasks} deleteTask = {props.deleteTask} />
+        <ClockApplication tasks = {props.tasks} deleteTask = {props.deleteTask} displayTasks = {props.displayTasks} setDisplayTasks = {props.setDisplayTasks}/>
     );
 };
 

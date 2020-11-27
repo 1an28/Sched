@@ -34,7 +34,7 @@ const TabPanel:React.FC<TabPanelProps> = (props: TabPanelProps) => {
 
 const Popup: React.FC = () => {
 
-    const {tasks, addTask, deleteTask} = useTasks();
+    const {tasks, addTask, deleteTask, displayTasks, setDisplayTasks} = useTasks();
     const [value, setValue] = useState(0);
     
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -51,7 +51,7 @@ const Popup: React.FC = () => {
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-                <Clock tasks = {tasks} deleteTask = {deleteTask}/>
+                <Clock tasks = {tasks} deleteTask = {deleteTask} displayTasks = {displayTasks} setDisplayTasks = {setDisplayTasks}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <Sched tasks = {tasks} deleteTask = {deleteTask}/>
