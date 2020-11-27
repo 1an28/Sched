@@ -150,10 +150,13 @@ const ClockApplication: React.FC<ClockAppProps> = (props) => { // clock app
             //setAfter12(new Date(now.getHours() + 12));
             props.tasks.forEach((task, index) => {
                 //const addDisplayTasks: Task[] = [];
-                if (task.endTime.getHours() == now.getHours() && task.endTime.getMinutes() == now.getMinutes() + 1) {
+                if (task.endTime.getTime() < now.getTime()) {
                     props.deleteTask(index);
                 }; // Finish task was Deleted.
- 
+
+                if (task.beginTime.getTime() < now.getTime() && now.getTime() < task.endTime.getTime()) {
+                    console.log("Task is progress.");
+                };
                 /* if (after12 < task.endTime) {
                     addDisplayTasks.push({beginTime: task.beginTime, endTime: after12});
                 };
