@@ -118,7 +118,7 @@ const SchedObject: React.FC<TasksProps> = (props) => {
                             "A 30 30 0 0 1 " +
                             (Math.cos(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * 430) + " " +
                             (Math.sin(Math.PI * (numberToDegree(task.beginTime.getHours(), task.beginTime.getMinutes() + 10) - 0.5)) * 430) + " " +
-                            "A 440 440 0 " + checkFlag(task) + " 1 " +
+                            "A 430 430 0 " + checkFlag(task) + " 1 " +
                             (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 8) - 0.5)) * 430) + " " +
                             (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 8) - 0.5)) * 430) + " " +
                             "L" +
@@ -134,7 +134,7 @@ const SchedObject: React.FC<TasksProps> = (props) => {
                             "L " +
                             (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * 430) + " " +
                             (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes() - 5) - 0.5)) * 430) + " " +
-                            "A 440 440 0 0 1 " +
+                            "A 430 430 0 0 1 " +
                             (Math.cos(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes()) - 0.5)) * 430) + " " +
                             (Math.sin(Math.PI * (numberToDegree(task.endTime.getHours(), task.endTime.getMinutes()) - 0.5)) * 430) + " " +
                             "L" +
