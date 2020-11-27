@@ -167,15 +167,17 @@ const ClockApplication: React.FC<ClockAppProps> = (props) => { // clock app
             add12Hour.setHours(add12Hour.getHours() + 12);
             setAfter12(add12Hour);
             const addItems: Task[] = [];
-            props.tasks.forEach((task, index) => {
-                if ((now.getTime() < task.endTime.getTime() && task.endTime.getTime() < after12.getTime()) && task.beginTime.getTime() < now.getTime()) {
-                    setTaskProgress(true);
-                } else {
-                    setTaskProgress(false);
-                };
+            if ((now.getTime() < props.tasks[0].endTime.getTime() && props.tasks[0].endTime.getTime() < after12.getTime()) && props.tasks[0].beginTime.getTime() < now.getTime()) {
+                setTaskProgress(true);
+            } else {
+                setTaskProgress(false);
+            };
 
+            props.tasks.forEach((task, index) => {
                 if (taskProgress) {
-                    addItems.push(task);
+                    if (index == 0) {
+                        addItems.push(task);
+                    }
                 } else {
                     if (task.endTime.getTime() < now.getTime()) {// Finish task was Deleted.
                         props.deleteTask(index);

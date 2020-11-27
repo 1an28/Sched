@@ -21,7 +21,10 @@ export const useTasks = () => {
     const [tasks, setTasks] = useState(initialTasks);
     const [displayTasks, setDisplayTasks] = useState<Task[]>([]);
 
-    useEffect(() => localStorage.setItem("tasks", JSON.stringify(tasks)), [tasks]);
+    useEffect(() => {
+        tasks.sort((a, b) => a.beginTime.getTime() - b.beginTime.getTime());
+        localStorage.setItem("tasks", JSON.stringify(tasks)), [tasks]
+    });
 
     const addTask = ( addItem: Task ) => {
         if ( addItem.beginTime > addItem.endTime ) {
