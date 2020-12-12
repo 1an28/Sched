@@ -29,8 +29,6 @@ export const useTasks = () => {
     const addTask = ( addItem: Task ) => {
         if ( addItem.beginTime > addItem.endTime ) {
 	        alert("Please set endTime after beginTime.");
-        } else if ( (addItem.endTime.getTime() - addItem.beginTime.getTime()) / 3600000 > 12 ) {
-            alert("Please set 12 hours or less.");
         } else {
 	        setTasks([...tasks, addItem]);
         };

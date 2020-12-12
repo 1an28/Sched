@@ -177,7 +177,9 @@ const ClockApplication: React.FC<ClockAppProps> = (props) => { // clock app
 
             props.tasks.forEach((task, index) => {
                 if (taskProgress) {
-                    if ( props.tasks[0].beginTime.getTime() <= task.beginTime.getTime() ) {
+                    if ( (task.endTime.getTime() - task.beginTime.getTime()) / 3600000 > 12 ) {
+                        addItems.push({beginTime: now, endTime: after12});
+                    } else if ( props.tasks[0].beginTime.getTime() <= task.beginTime.getTime() ) {
                         addItems.push(task);
                     }
                 } else {
