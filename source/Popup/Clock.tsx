@@ -146,6 +146,7 @@ const SchedObject: React.FC<TasksProps> = (props) => {
                             
                           }
                           fill="#E17477"
+                          opacity="0.5"
                         />
                     );
                 })
@@ -167,6 +168,7 @@ const ClockApplication: React.FC<ClockAppProps> = (props) => { // clock app
             add12Hour.setHours(add12Hour.getHours() + 12);
             setAfter12(add12Hour);
             const addItems: Task[] = [];
+            
             if (props.tasks.length != 0 && ((now.getTime() < props.tasks[0].endTime.getTime() && props.tasks[0].endTime.getTime() < after12.getTime()) && props.tasks[0].beginTime.getTime() < now.getTime())) {
                 setTaskProgress(true);
             } else {
@@ -175,7 +177,7 @@ const ClockApplication: React.FC<ClockAppProps> = (props) => { // clock app
 
             props.tasks.forEach((task, index) => {
                 if (taskProgress) {
-                    if (index == 0) {
+                    if ( props.tasks[0].beginTime.getTime() <= task.beginTime.getTime() ) {
                         addItems.push(task);
                     }
                 } else {
