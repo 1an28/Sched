@@ -33,9 +33,9 @@ const Sched: React.FC<Props> = ( props ) => {
                 {
                     props.tasks.map((task, index) => {
                         return(
-                            <ListItem style = {listItemCss}>
-                                <ListItemText secondaryText = "BEGIN" primaryText={task.beginTime.getMonth() + "/" + task.beginTime.getDay() + "_" + task.beginTime.getHours() + ":" + task.beginTime.getMinutes()}/>
-                                <ListItemText secondaryText = "END" primaryText={task.endTime.getMonth() + "/" + task.endTime.getDay() + "_" + task.endTime.getHours() + ":" + task.endTime.getMinutes()}/>
+                            <ListItem key = {index} style = {listItemCss}>
+                                <ListItemText secondaryText = "BEGIN" primaryText={(task.beginTime.getMonth() + 1) + "/" + task.beginTime.getDate() + "_" + task.beginTime.getHours() + ":" + task.beginTime.getMinutes()}/>
+                                <ListItemText secondaryText = "END" primaryText={(task.endTime.getMonth() + 1) + "/" + task.endTime.getDate() + "_" + task.endTime.getHours() + ":" + task.endTime.getMinutes()}/>
                                 <IconButton onClick = {() => props.deleteTask(index)} >
                                     <ListItemGraphic graphic={<MaterialIcon icon='remove_circle_outline'/>}/>
                                 </IconButton>

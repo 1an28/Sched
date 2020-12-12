@@ -19,14 +19,18 @@ export const useTasks = () => {
         return tasksItem;
     };
     const [tasks, setTasks] = useState(initialTasks);
-    
-    useEffect(() => localStorage.setItem("tasks", JSON.stringify(tasks)), [tasks]);
+    const [displayTasks, setDisplayTasks] = useState<Task[]>([]);
+
+    useEffect(() => {
+        tasks.sort((a, b) => a.beginTime.getTime() - b.beginTime.getTime());
+        localStorage.setItem("tasks", JSON.stringify(tasks)), [tasks]
+    });
 
     const addTask = ( addItem: Task ) => {
-        if ( addItem.beginTime.getTime() < addItem.endTime.getTime() ) {
-            setTasks(tasks.concat(addItem));
+        if ( addItem.beginTime > addItem.endTime ) {
+	        alert("Please set endTime after beginTime.");
         } else {
-            alert("ERROR");
+	        setTasks([...tasks, addItem]);
         };
     } 
 
@@ -35,5 +39,5 @@ export const useTasks = () => {
         setTasks([...tasks]);
     };
 
-    return {tasks, addTask, deleteTask};
+    return {tasks, addTask, deleteTask, displayTasks, setDisplayTasks};
 };
