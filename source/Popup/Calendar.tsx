@@ -1,12 +1,15 @@
 import React from "react";
 
-import {ScheduleComponent, Day, Week, WorkWeek, Month, Inject} from '@syncfusion/ej2-react-schedule';
+import {ScheduleComponent, Month, Inject, ViewDirective, ViewsDirective} from '@syncfusion/ej2-react-schedule';
 
 const Calendar: React.FC = () => {
     return (
         <div className='control-wrapper'>
-            <ScheduleComponent height='350px' selectedDate={new Date()}>
-                <Inject services={[Day, Week, WorkWeek, Month]} />
+            <ScheduleComponent height='350px' selectedDate={new Date()} currentView="Month" >
+                <ViewsDirective>
+                    <ViewDirective option="Month"/>
+                </ViewsDirective>
+                <Inject services={[Month]} />
             </ScheduleComponent>
         </div>
     );
