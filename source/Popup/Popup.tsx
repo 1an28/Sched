@@ -24,7 +24,7 @@ const TabPanel:React.FC<TabPanelProps> = (props: TabPanelProps) => {
           aria-labelledby={"tab-$" + index}
         >
         {value === index && (
-            <Box p={2}>
+            <Box p={1}>
                 {children}
             </Box>
         )}

@@ -1330,7 +1330,7 @@
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-icons/-/ej2-icons-18.3.47.tgz#992645d63122ba487e06eb31ea160350b8a50f18"
   integrity sha512-SSasO60RF0wZuPvz7KUMhvqeZgHCBOrCy2IjPywg3YDOgH244E90NasE0jfGm/1HDdkkVhxWATh8bZh79Ivg/g==
 
-"@syncfusion/ej2-inputs@~18.3.53":
+"@syncfusion/ej2-inputs@18.3.53", "@syncfusion/ej2-inputs@~18.3.53":
   version "18.3.53"
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-inputs/-/ej2-inputs-18.3.53.tgz#f663016f08cab8ab12c7a8a35df2e41a98b75fc6"
   integrity sha512-o8He6PIXO+yN/SIUoOuHLwdXyKQSQ94LZ/Yy9twYoKUPoEgddYCtsb1R2FzLod+3zg3inHjR8GpVtCL7OxBrAA==
@@ -1375,6 +1375,15 @@
   integrity sha512-dpNnTPjUUxfkdb0BxeUcBs9DPJ/ngf9ipbd5eLwJPE7XFlrOJ1owEoqDqXIeW9pI+eVu9L3hF25TI287T5b9Sw==
   dependencies:
     "@syncfusion/ej2-base" "~18.3.52"
+
+"@syncfusion/ej2-react-inputs@^18.3.53":
+  version "18.3.53"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-react-inputs/-/ej2-react-inputs-18.3.53.tgz#4e47db1a20afa258fcda6ebc2d9c31f3b81111a5"
+  integrity sha512-y2qSeNa61UkM+Z2O4TjG8V8PfHXwsVdg/tUb4aalCfw4lQeWiy/uQbVt0VxvlEP91jinEjPnDDwrCwQiJRI//A==
+  dependencies:
+    "@syncfusion/ej2-base" "~18.3.52"
+    "@syncfusion/ej2-inputs" "18.3.53"
+    "@syncfusion/ej2-react-base" "~18.3.52"
 
 "@syncfusion/ej2-react-schedule@^18.3.53":
   version "18.3.53"
