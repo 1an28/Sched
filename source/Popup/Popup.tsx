@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Clock from "./Clock";
-import Calendar from "./Calendar";
+import Calendar, {exportOnClick, uploadOnSelect} from "./Calendar";
 import './style.css';
 import {useTasks} from "./useTasks";
 
@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
         marginRight: 10,
         paddingLeft: 20,
         paddingRight: 20
-    }
+    },
 }));
 
 const Popup: React.FC = () => {
@@ -84,9 +84,12 @@ const Popup: React.FC = () => {
             </TabPanel>
 
             <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={scheduleHandleClose}>
-                <MenuItem onClick={scheduleHandleClose}>Profile</MenuItem>
-                <MenuItem onClick={scheduleHandleClose}>My account</MenuItem>
-                <MenuItem onClick={scheduleHandleClose}>Logout</MenuItem>
+                <MenuItem onClick={scheduleHandleClose}>
+                    <button onClick={exportOnClick}>Export</button>
+                </MenuItem>
+                <MenuItem onClick={scheduleHandleClose}>
+                    <input type="file" accept=".ics" onChange={uploadOnSelect}/>
+                </MenuItem>
             </Menu>
         </section>
     );
