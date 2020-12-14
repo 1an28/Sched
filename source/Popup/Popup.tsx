@@ -7,6 +7,10 @@ import {useTasks} from "./useTasks";
 import {AppBar, Tabs, Tab, Box} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
 type TabPanelProps = {
     children?: React.ReactNode,
     index: number,
@@ -46,7 +50,16 @@ const Popup: React.FC = () => {
 
     const {tasks, deleteTask, displayTasks, setDisplayTasks} = useTasks();
     const [value, setValue] = useState(0);
-    
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    const scheduleHandleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const scheduleHandleClose = () => {
+        setAnchorEl(null);
+    };
+
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         event.preventDefault();
         setValue(newValue);
@@ -64,8 +77,17 @@ const Popup: React.FC = () => {
                 <Clock tasks = {tasks} deleteTask = {deleteTask} displayTasks = {displayTasks} setDisplayTasks = {setDisplayTasks}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
+                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={scheduleHandleClick}>
+                    BUTTON
+                </Button>
                 <Calendar />
             </TabPanel>
+
+            <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={scheduleHandleClose}>
+                <MenuItem onClick={scheduleHandleClose}>Profile</MenuItem>
+                <MenuItem onClick={scheduleHandleClose}>My account</MenuItem>
+                <MenuItem onClick={scheduleHandleClose}>Logout</MenuItem>
+            </Menu>
         </section>
     );
 };
