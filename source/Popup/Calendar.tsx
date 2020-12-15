@@ -26,5 +26,4 @@ const Calendar: React.FC = () => {
         </div>
     );
 };
-
 export default Calendar;

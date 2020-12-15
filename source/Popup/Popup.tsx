@@ -7,9 +7,11 @@ import {useTasks} from "./useTasks";
 import {AppBar, Tabs, Tab, Box} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import SettingsIcon from '@material-ui/icons/Settings';
+import IconButton from '@material-ui/core/IconButton';
 
 type TabPanelProps = {
     children?: React.ReactNode,
@@ -43,6 +45,11 @@ const useStyles = makeStyles(() => ({
         paddingLeft: 20,
         paddingRight: 20
     },
+    settingIcon: {
+        color: "white",
+        marginLeft: "auto",
+        marginRight: 10
+    },
 }));
 
 const Popup: React.FC = () => {
@@ -66,26 +73,27 @@ const Popup: React.FC = () => {
     };
     return (
         <section id="popup">
-            <AppBar position="static" >
+            <AppBar position="static">
                 <Tabs value={value} centered onChange={handleChange} aria-label="simple tabs example">
                     <Tab className={classes.tab} label="Clock" id = "tab-0" aria-controls = "tabpanel-0"/>
                     <Tab className={classes.tab} label="Calendar" id = "tab-1" aria-controls = "tabpanel-1"/>
+                    <IconButton className={classes.settingIcon} aria-controls="simple-menu" aria-haspopup="true" onClick={scheduleHandleClick}>
+                        <SettingsIcon />
+                    </IconButton>
                 </Tabs>
+                
             </AppBar>
             
             <TabPanel value={value} index={0}>
                 <Clock tasks = {tasks} deleteTask = {deleteTask} displayTasks = {displayTasks} setDisplayTasks = {setDisplayTasks}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={scheduleHandleClick}>
-                    BUTTON
-                </Button>
                 <Calendar />
             </TabPanel>
 
             <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={scheduleHandleClose}>
                 <MenuItem onClick={scheduleHandleClose}>
-                    <button onClick={exportOnClick}>Export</button>
+                    <button onClick={exportOnClick}>ICSFILE EXPORT</button>
                 </MenuItem>
                 <MenuItem onClick={scheduleHandleClose}>
                     <input type="file" accept=".ics" onChange={uploadOnSelect}/>
